@@ -17,7 +17,7 @@ import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.StandardCharsets;
@@ -132,7 +132,10 @@ public class JacksonConfiguration implements WebMvcConfigurer {
 		ListIterator<HttpMessageConverter<?>> it = converters.listIterator();
 		boolean replaced = false;
 		while (it.hasNext()) {
-			if (it.next() instanceof JacksonJsonHttpMessageConverter) {
+			HttpMessageConverter<?> converter = it.next();
+			// 替换任何 Jackson 相关的转换器
+			if (converter.getClass().getSimpleName().contains("Jackson")
+					&& !(converter instanceof MappingJackson2HttpMessageConverter)) {
 				it.set(jackson2Converter);
 				replaced = true;
 			}
