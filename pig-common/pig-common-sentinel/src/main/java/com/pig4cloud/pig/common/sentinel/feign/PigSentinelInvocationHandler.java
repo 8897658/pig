@@ -13,7 +13,8 @@ import feign.Feign;
 import feign.InvocationHandlerFactory;
 import feign.MethodMetadata;
 import feign.Target;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.openfeign.FallbackFactory;
 
 import java.lang.reflect.InvocationHandler;
@@ -31,8 +32,9 @@ import static feign.Util.checkNotNull;
  * @author lengleng
  * @date 2020/6/9
  */
-@Slf4j
 public class PigSentinelInvocationHandler implements InvocationHandler {
+
+	private static final Logger log = LoggerFactory.getLogger(PigSentinelInvocationHandler.class);
 
 	public static final String EQUALS = "equals";
 

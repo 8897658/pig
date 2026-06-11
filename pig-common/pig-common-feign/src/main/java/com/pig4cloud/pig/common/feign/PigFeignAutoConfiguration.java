@@ -35,7 +35,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.JacksonJsonHttpMessageConverter;
 
 import java.util.ListIterator;
 
@@ -119,7 +118,7 @@ public class PigFeignAutoConfiguration {
 			ListIterator<HttpMessageConverter<?>> it = converters.listIterator();
 			boolean replaced = false;
 			while (it.hasNext()) {
-				if (it.next() instanceof JacksonJsonHttpMessageConverter) {
+				if (it.next() instanceof org.springframework.http.converter.json.MappingJackson2HttpMessageConverter) {
 					it.set(jackson2Converter);
 					replaced = true;
 				}

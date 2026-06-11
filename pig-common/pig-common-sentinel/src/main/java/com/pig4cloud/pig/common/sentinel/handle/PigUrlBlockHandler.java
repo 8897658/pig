@@ -23,7 +23,8 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.pig4cloud.pig.common.core.util.R;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 /**
@@ -32,8 +33,9 @@ import org.springframework.http.HttpStatus;
  * <p>
  * 降级 限流策略
  */
-@Slf4j
 public class PigUrlBlockHandler implements BlockExceptionHandler {
+
+	private static final Logger log = LoggerFactory.getLogger(PigUrlBlockHandler.class);
 
 	/**
 	 * Handle the request when blocked.

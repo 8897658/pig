@@ -24,7 +24,8 @@ import com.pig4cloud.pig.common.core.util.R;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -55,15 +56,16 @@ import java.util.stream.Collectors;
 /**
  * 全局异常处理器
  * <p>
- * 适配 Spring Boot 4.0+/Spring Framework 7.0+，统一拦截 Web、参数校验、Feign、IO 等异常。
+ * 适配 Spring Boot 3.x/Spring Framework 6.x，统一拦截 Web、参数校验、Feign、IO 等异常。
  *
  * @author lengleng
  * @date 2026-05-18
  */
-@Slf4j
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalBizExceptionHandler {
+
+	private static final Logger log = LoggerFactory.getLogger(GlobalBizExceptionHandler.class);
 
 	/**
 	 * JSON 序列化工具，用于解析 Feign 透传的远端 R 响应体。
@@ -170,7 +172,7 @@ public class GlobalBizExceptionHandler {
 	}
 
 	/**
-	 * Spring 7.0+ 方法级参数校验异常（@Validated 标注在 Controller 上的 @RequestParam / @PathVariable
+	 * Spring 6.1+ 方法级参数校验异常（@Validated 标注在 Controller 上的 @RequestParam / @PathVariable
 	 * 校验）
 	 * @param exception 方法参数校验异常
 	 * @return 方法参数校验失败的统一失败响应
@@ -179,14 +181,12 @@ public class GlobalBizExceptionHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public R handleHandlerMethodValidationException(HandlerMethodValidationException exception) {
 		log.warn("方法参数校验异常 ex={}", exception.getMessage());
-		String parameterMessage = exception.getParameterValidationResults()
+		String message = exception.getAllValidationResults()
 			.stream()
 			.map(ParameterValidationResult::getResolvableErrors)
 			.flatMap(List::stream)
 			.map(error -> error.getDefaultMessage() == null ? StrUtil.EMPTY : error.getDefaultMessage())
 			.collect(Collectors.joining(StrUtil.COMMA));
-		String crossParameterMessage = buildResolvableErrorMessage(exception.getCrossParameterValidationResults());
-		String message = joinErrorMessages(parameterMessage, crossParameterMessage);
 		return R.failed(message);
 	}
 
@@ -272,7 +272,7 @@ public class GlobalBizExceptionHandler {
 	 * @return 文件大小超过限制的统一失败响应
 	 */
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	@ResponseStatus(HttpStatus.CONTENT_TOO_LARGE)
+	@ResponseStatus(HttpStatus.PAYLOAD_TOO_LARGE)
 	public R handleMaxUploadSizeExceededException(MaxUploadSizeExceededException exception) {
 		log.warn("上传文件超过大小限制 ex={}", exception.getMessage());
 		return R.failed("上传文件大小超过限制");
