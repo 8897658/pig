@@ -59,8 +59,7 @@ public class DataPermissionAutoConfiguration {
 	/**
 	 * 数据权限拦截器
 	 * <p>
-	 * 注：此拦截器需要在 MybatisPlusInterceptor 中正确排序。 数据权限拦截器应该在多租户、动态表名插件之后，
-	 * 分页、乐观锁插件之前。
+	 * 注：此拦截器需要在 MybatisPlusInterceptor 中正确排序。 数据权限拦截器应该在多租户、动态表名插件之后， 分页、乐观锁插件之前。
 	 * </p>
 	 * @param handler 数据权限处理器
 	 * @return DataPermissionInterceptor
@@ -74,9 +73,8 @@ public class DataPermissionAutoConfiguration {
 	/**
 	 * 将 DataPermissionInterceptor 添加到 MybatisPlusInterceptor
 	 * <p>
-	 * 注意：此方法会在 pig-common-data 的 MybatisPlusInterceptor 创建之后，
-	 * 通过 @ConditionalOnBean 确保已有拦截器存在。
-	 * 使用 @Autowired 注入拦截器并将其添加到 interceptor 链中。
+	 * 注意：此方法会在 pig-common-data 的 MybatisPlusInterceptor 创建之后， 通过 @ConditionalOnBean
+	 * 确保已有拦截器存在。 使用 @Autowired 注入拦截器并将其添加到 interceptor 链中。
 	 * </p>
 	 * @param interceptor MyBatis Plus 拦截器
 	 * @param dataPermissionInterceptor 数据权限拦截器
