@@ -118,6 +118,7 @@ CREATE TABLE `sys_dept` (
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标志',
   `parent_id` bigint(20) DEFAULT NULL COMMENT '父级部门ID',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`dept_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='部门管理';
 
@@ -207,6 +208,7 @@ CREATE TABLE `sys_dict_item` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remarks` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注信息',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标志',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sys_dict_value` (`item_value`) USING BTREE,
   KEY `sys_dict_label` (`label`) USING BTREE,
@@ -312,6 +314,7 @@ CREATE TABLE `sys_file` (
   `create_time` datetime DEFAULT NULL COMMENT '上传时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标志',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='文件管理表';
 
@@ -457,6 +460,7 @@ CREATE TABLE `sys_log` (
   `time` bigint(20) DEFAULT NULL COMMENT '执行时间',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标志',
   `exception` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '异常信息',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `sys_log_request_uri` (`request_uri`) USING BTREE,
   KEY `sys_log_type` (`log_type`) USING BTREE,
@@ -491,6 +495,7 @@ CREATE TABLE `sys_menu` (
   `update_by` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT ' ' COMMENT '修改人',
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标志，0未删除，1已删除',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`menu_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='菜单权限表';
 
@@ -756,6 +761,7 @@ CREATE TABLE `sys_role` (
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标记，0未删除，1已删除',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`role_id`) USING BTREE,
   KEY `role_idx1_role_code` (`role_code`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='系统角色表';
@@ -1047,6 +1053,7 @@ CREATE TABLE `sys_user` (
   `wx_cp_userid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '企业微信标识',
   `wx_ding_userid` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '钉钉标识',
   `dept_id` bigint(20) DEFAULT NULL COMMENT '主部门ID',
+  `tenant_id` bigint(20) DEFAULT NULL COMMENT '租户ID',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户表';
 
