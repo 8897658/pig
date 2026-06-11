@@ -208,4 +208,10 @@ public class SysUser extends Model<SysUser> implements Serializable {
 	@Schema(description = "邮箱")
 	private String email;
 
+	/**
+	 * 租户ID
+	 */
+	@Schema(description = "租户ID")
+	private Long tenantId;
+
 }
