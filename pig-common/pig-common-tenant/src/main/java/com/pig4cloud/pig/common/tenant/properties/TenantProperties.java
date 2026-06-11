@@ -30,8 +30,13 @@ import java.util.List;
  * @author lengleng
  * @date 2026-06-11
  */
-@ConfigurationProperties(prefix = "pig.tenant")
+@ConfigurationProperties(prefix = TenantProperties.PREFIX)
 public class TenantProperties {
+
+	/**
+	 * 配置前缀
+	 */
+	public static final String PREFIX = "pig.tenant";
 
 	/**
 	 * 是否开启多租户
