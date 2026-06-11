@@ -47,6 +47,7 @@
         <velocity.tool.version>3.1</velocity.tool.version>
         <captcha.version>1.4.0</captcha.version>
         <captcha.image.version>2.2.3</captcha.image.version>
+        <flowable.version>7.1.0</flowable.version>
     </properties>
 
     <dependencyManagement>
@@ -420,6 +421,14 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-bom</artifactId>
                 <version>${mybatis-plus.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- flowable BOM -->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot</artifactId>
+                <version>${flowable.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
