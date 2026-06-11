@@ -104,6 +104,7 @@
         <module>pig-upms</module>
         <module>pig-common</module>
         <module>pig-visual</module>
+        <module>pig-process</module>
     </modules>
 
     <dependencyManagement>

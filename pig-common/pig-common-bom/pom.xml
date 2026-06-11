@@ -129,6 +129,11 @@
                 <artifactId>pig-upms-api</artifactId>
                 <version>${pig.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.pig4cloud</groupId>
+                <artifactId>pig-process-api</artifactId>
+                <version>${pig.version}</version>
+            </dependency>
             <!-- 行为验证码核心模块 -->
             <dependency>
                 <groupId>io.springboot.plugin</groupId>
