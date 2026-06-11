@@ -1919,3 +1919,28 @@ CREATE TABLE `sys_data_scope` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='角色数据权限表';
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for sys_gateway_route
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_gateway_route`;
+CREATE TABLE `sys_gateway_route` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint DEFAULT NULL COMMENT '租户ID',
+  `route_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '路由ID（全局唯一）',
+  `route_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '路由名称',
+  `uri` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '路由URI（lb://service-name 或 http://xxx）',
+  `predicates` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '谓词配置（JSON数组）',
+  `filters` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '过滤器配置（JSON数组）',
+  `metadata` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '元数据配置（JSON对象）',
+  `sort_order` int DEFAULT '0' COMMENT '排序值（数值越小优先级越高）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态：0-启用，1-禁用',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标记：0-正常，1-已删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_route_id` (`route_id`),
+  KEY `idx_tenant_id` (`tenant_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='网关路由配置表';
