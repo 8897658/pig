@@ -31,8 +31,7 @@ import org.springframework.web.servlet.AsyncHandlerInterceptor;
 /**
  * 租户请求拦截器
  * <p>
- * 从请求头中提取租户ID并设置到线程上下文中，支持在后续的数据库操作中自动进行租户过滤。
- * 支持 @TenantIgnore 注解标注的方法忽略租户过滤。
+ * 从请求头中提取租户ID并设置到线程上下文中，支持在后续的数据库操作中自动进行租户过滤。 支持 @TenantIgnore 注解标注的方法忽略租户过滤。
  *
  * @author lengleng
  * @date 2026-06-11
@@ -54,12 +53,10 @@ public class TenantRequestInterceptor implements AsyncHandlerInterceptor {
 	/**
 	 * 请求预处理
 	 * <p>
-	 * 从请求头中提取租户ID并设置到 TenantContextHolder。
-	 * 如果方法标注了 @TenantIgnore 注解，则不设置租户上下文。
-	 *
-	 * @param request  HTTP 请求
+	 * 从请求头中提取租户ID并设置到 TenantContextHolder。 如果方法标注了 @TenantIgnore 注解，则不设置租户上下文。
+	 * @param request HTTP 请求
 	 * @param response HTTP 响应
-	 * @param handler  处理器
+	 * @param handler 处理器
 	 * @return true 表示继续执行，false 表示中断请求
 	 */
 	@Override
@@ -107,11 +104,10 @@ public class TenantRequestInterceptor implements AsyncHandlerInterceptor {
 	 * 请求完成后清理
 	 * <p>
 	 * 清除 TenantContextHolder 中的租户ID，避免内存泄漏。
-	 *
-	 * @param request  HTTP 请求
+	 * @param request HTTP 请求
 	 * @param response HTTP 响应
-	 * @param handler  处理器
-	 * @param ex       异常（如果有）
+	 * @param handler 处理器
+	 * @param ex 异常（如果有）
 	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
@@ -123,10 +119,9 @@ public class TenantRequestInterceptor implements AsyncHandlerInterceptor {
 	 * 异步请求完成后清理
 	 * <p>
 	 * 清除 TenantContextHolder 中的租户ID，避免内存泄漏。
-	 *
-	 * @param request  HTTP 请求
+	 * @param request HTTP 请求
 	 * @param response HTTP 响应
-	 * @param handler  处理器
+	 * @param handler 处理器
 	 */
 	@Override
 	public void afterConcurrentHandlingStarted(HttpServletRequest request, HttpServletResponse response, Object handler)

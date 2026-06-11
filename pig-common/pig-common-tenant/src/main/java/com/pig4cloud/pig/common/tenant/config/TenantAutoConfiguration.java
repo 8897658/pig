@@ -37,10 +37,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * 租户自动配置类
  * <p>
- * 当配置 pig.tenant.enabled=true 时自动激活多租户功能。
- * 配置包括：
- * 1. TenantLineInnerInterceptor - MyBatis Plus 租户拦截器，自动拼接租户过滤条件
- * 2. TenantRequestInterceptor - Web 请求拦截器，从请求头提取租户ID
+ * 当配置 pig.tenant.enabled=true 时自动激活多租户功能。 配置包括： 1. TenantLineInnerInterceptor - MyBatis
+ * Plus 租户拦截器，自动拼接租户过滤条件 2. TenantRequestInterceptor - Web 请求拦截器，从请求头提取租户ID
  *
  * @author lengleng
  * @date 2026-06-11
@@ -61,7 +59,6 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
 	 * 租户处理器
 	 * <p>
 	 * 实现 TenantLineHandler 接口，提供租户ID和忽略表逻辑
-	 *
 	 * @return TenantHandler
 	 */
 	@Bean
@@ -75,7 +72,6 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
 	 * 租户行拦截器
 	 * <p>
 	 * MyBatis Plus 内置拦截器，自动在 SQL 语句中拼接租户过滤条件
-	 *
 	 * @param tenantHandler 租户处理器
 	 * @return TenantLineInnerInterceptor
 	 */
@@ -89,9 +85,7 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
 	/**
 	 * 将 TenantLineInnerInterceptor 添加到 MybatisPlusInterceptor
 	 * <p>
-	 * 注意：租户拦截器应该添加在最前面，确保在所有其他拦截器之前执行。
-	 * 执行顺序：租户拦截器 -> 数据权限 -> 动态表名 -> 分页 -> 乐观锁
-	 *
+	 * 注意：租户拦截器应该添加在最前面，确保在所有其他拦截器之前执行。 执行顺序：租户拦截器 -> 数据权限 -> 动态表名 -> 分页 -> 乐观锁
 	 * @param interceptor MyBatis Plus 拦截器
 	 * @param tenantLineInnerInterceptor 租户行拦截器
 	 */
@@ -110,7 +104,6 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
 	 * 租户请求拦截器
 	 * <p>
 	 * 从请求头提取租户ID并设置到线程上下文
-	 *
 	 * @return TenantRequestInterceptor
 	 */
 	@Bean
@@ -124,14 +117,14 @@ public class TenantAutoConfiguration implements WebMvcConfigurer {
 	 * 注册租户请求拦截器
 	 * <p>
 	 * 将拦截器添加到 Spring MVC 拦截器链中
-	 *
 	 * @param registry 拦截器注册表
 	 */
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(tenantRequestInterceptor())
 			.addPathPatterns("/**")
-			.excludePathPatterns("/actuator/**", "/error", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**");
+			.excludePathPatterns("/actuator/**", "/error", "/v3/api-docs/**", "/swagger-ui/**",
+					"/swagger-resources/**");
 		log.info("TenantRequestInterceptor registered for path pattern: /**");
 	}
 

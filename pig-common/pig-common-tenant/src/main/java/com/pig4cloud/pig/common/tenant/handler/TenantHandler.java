@@ -49,9 +49,7 @@ public class TenantHandler implements TenantLineHandler {
 	/**
 	 * 获取租户ID值
 	 * <p>
-	 * 从 TenantContextHolder 中获取当前租户ID，返回对应的 SQL 表达式。
-	 * 如果未设置租户ID，返回 NullValue 以避免 SQL 错误。
-	 *
+	 * 从 TenantContextHolder 中获取当前租户ID，返回对应的 SQL 表达式。 如果未设置租户ID，返回 NullValue 以避免 SQL 错误。
 	 * @return 租户ID的 SQL 表达式
 	 */
 	@Override
@@ -66,7 +64,6 @@ public class TenantHandler implements TenantLineHandler {
 
 	/**
 	 * 获取租户字段名称
-	 *
 	 * @return 租户字段名称，默认为 tenant_id
 	 */
 	@Override
@@ -78,7 +75,6 @@ public class TenantHandler implements TenantLineHandler {
 	 * 判断是否忽略租户过滤
 	 * <p>
 	 * 根据配置的忽略表列表判断当前表是否需要进行租户过滤。
-	 *
 	 * @param tableName 表名
 	 * @return true 表示忽略租户过滤，false 表示需要租户过滤
 	 */

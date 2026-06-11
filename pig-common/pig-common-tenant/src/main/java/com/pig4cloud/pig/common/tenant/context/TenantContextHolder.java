@@ -22,8 +22,7 @@ import com.alibaba.ttl.TransmittableThreadLocal;
 /**
  * 租户上下文持有者
  * <p>
- * 使用 TTL (Transmittable ThreadLocal) 实现租户信息的线程隔离，
- * 确保在异步线程池中也能正确传递租户信息
+ * 使用 TTL (Transmittable ThreadLocal) 实现租户信息的线程隔离， 确保在异步线程池中也能正确传递租户信息
  *
  * @author lengleng
  * @date 2026-06-11
