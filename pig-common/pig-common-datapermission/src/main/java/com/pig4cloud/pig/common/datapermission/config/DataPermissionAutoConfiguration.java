@@ -18,18 +18,17 @@ package com.pig4cloud.pig.common.datapermission.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.inner.InnerInterceptor;
 import com.pig4cloud.pig.common.datapermission.handler.DataPermissionHandler;
 import com.pig4cloud.pig.common.datapermission.properties.DataPermissionProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 数据权限自动配置类
@@ -37,6 +36,7 @@ import java.util.List;
  * @author lengleng
  * @since 4.0.0
  */
+@Slf4j
 @RequiredArgsConstructor
 @AutoConfiguration
 @EnableConfigurationProperties(DataPermissionProperties.class)
@@ -57,36 +57,39 @@ public class DataPermissionAutoConfiguration {
 	}
 
 	/**
-	 * MyBatis Plus 拦截器配置
+	 * 数据权限拦截器
 	 * <p>
-	 * 注意：如果项目中已有 MybatisPlusInterceptor，请将 DataPermissionHandler
-	 * 添加到已有的拦截器中，而不是创建新的拦截器。
+	 * 注：此拦截器需要在 MybatisPlusInterceptor 中正确排序。 数据权限拦截器应该在多租户、动态表名插件之后，
+	 * 分页、乐观锁插件之前。
 	 * </p>
 	 * @param handler 数据权限处理器
-	 * @return MybatisPlusInterceptor
+	 * @return DataPermissionInterceptor
 	 */
 	@Bean
-	@ConditionalOnMissingBean(MybatisPlusInterceptor.class)
-	public MybatisPlusInterceptor mybatisPlusInterceptor(DataPermissionHandler handler) {
-		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-		List<InnerInterceptor> innerInterceptors = new ArrayList<>();
+	@ConditionalOnMissingBean(DataPermissionInterceptor.class)
+	public DataPermissionInterceptor dataPermissionInterceptor(DataPermissionHandler handler) {
+		return new DataPermissionInterceptor(handler);
+	}
 
-		// 添加数据权限拦截器
-		DataPermissionInterceptor dataPermissionInterceptor = new DataPermissionInterceptor();
-		dataPermissionInterceptor.setDataPermissionHandler((loggedInUser -> {
-			// 这里可以获取当前用户的部门ID信息
-			// 实际使用时，需要结合 SecurityUtils 获取当前用户信息
-			DataPermissionHandler.DataPermissionContext context = DataPermissionHandler.getContext();
-			if (context == null || context.isSuperAdmin()) {
-				return null;
-			}
-			return null; // 返回 null 表示不使用默认的数据权限处理
-		}));
-
-		innerInterceptors.add(dataPermissionInterceptor);
-		interceptor.setInterceptors(innerInterceptors);
-
-		return interceptor;
+	/**
+	 * 将 DataPermissionInterceptor 添加到 MybatisPlusInterceptor
+	 * <p>
+	 * 注意：此方法会在 pig-common-data 的 MybatisPlusInterceptor 创建之后，
+	 * 通过 @ConditionalOnBean 确保已有拦截器存在。
+	 * 使用 @Autowired 注入拦截器并将其添加到 interceptor 链中。
+	 * </p>
+	 * @param interceptor MyBatis Plus 拦截器
+	 * @param dataPermissionInterceptor 数据权限拦截器
+	 */
+	@Autowired(required = false)
+	@ConditionalOnBean(MybatisPlusInterceptor.class)
+	public void configureDataPermissionInterceptor(MybatisPlusInterceptor interceptor,
+			DataPermissionInterceptor dataPermissionInterceptor) {
+		if (interceptor != null) {
+			log.info("Adding DataPermissionInterceptor to MybatisPlusInterceptor chain");
+			// 数据权限拦截器应该添加在第一位（多租户之后）
+			interceptor.getInterceptors().add(0, dataPermissionInterceptor);
+		}
 	}
 
 }
