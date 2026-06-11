@@ -105,6 +105,7 @@
         <module>pig-common</module>
         <module>pig-visual</module>
         <module>pig-process</module>
+        <module>pig-report</module>
     </modules>
 
     <dependencyManagement>
