@@ -64,6 +64,12 @@ public class SysTenant extends Model<SysTenant> {
 	private String code;
 
 	/**
+	 * 绑定域名
+	 */
+	@Schema(description = "绑定域名")
+	private String domain;
+
+	/**
 	 * 状态：0-正常，1-禁用
 	 */
 	@Schema(description = "状态：0-正常，1-禁用")

@@ -19,6 +19,7 @@
 
 package com.pig4cloud.pig.admin.controller;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -141,7 +142,7 @@ public class SysTenantController {
 	@DeleteMapping
 	@HasPermission("sys_tenant_del")
 	public R removeById(@RequestBody Long[] ids) {
-		return R.ok(sysTenantService.removeBatchByIds(ids));
+		return R.ok(sysTenantService.removeBatchByIds(CollUtil.toList(ids)));
 	}
 
 }

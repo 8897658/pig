@@ -190,4 +190,16 @@ public class UserVO implements Serializable {
 	@Schema(description = "邮箱")
 	private String email;
 
+	/**
+	 * 租户ID
+	 */
+	@Schema(description = "租户ID")
+	private Long tenantId;
+
+	/**
+	 * 数据权限范围
+	 */
+	@Schema(description = "数据权限范围")
+	private Integer dataScope;
+
 }
