@@ -71,6 +71,11 @@
             </dependency>
             <dependency>
                 <groupId>com.pig4cloud</groupId>
+                <artifactId>pig-common-datapermission</artifactId>
+                <version>${pig.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pig4cloud</groupId>
                 <artifactId>pig-common-datasource</artifactId>
                 <version>${pig.version}</version>
             </dependency>
