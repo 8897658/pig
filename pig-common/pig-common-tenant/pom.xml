@@ -23,28 +23,32 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.pig4cloud</groupId>
-        <artifactId>pig</artifactId>
+        <artifactId>pig-common</artifactId>
         <version>4.0.0</version>
     </parent>
 
-    <artifactId>pig-common</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>pig-common-tenant</artifactId>
+    <packaging>jar</packaging>
 
-    <description>pig 公共聚合模块</description>
+    <description>pig 多租户模块</description>
 
-    <modules>
-        <module>pig-common-bom</module>
-        <module>pig-common-core</module>
-        <module>pig-common-data</module>
-        <module>pig-common-datasource</module>
-        <module>pig-common-excel</module>
-        <module>pig-common-feign</module>
-        <module>pig-common-log</module>
-        <module>pig-common-oss</module>
-        <module>pig-common-security</module>
-        <module>pig-common-sentinel</module>
-        <module>pig-common-swagger</module>
-        <module>pig-common-tenant</module>
-        <module>pig-common-xss</module>
-    </modules>
+    <dependencies>
+        <!--pig-common-core-->
+        <dependency>
+            <groupId>com.pig4cloud</groupId>
+            <artifactId>pig-common-core</artifactId>
+        </dependency>
+        <!--TTL-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>transmittable-thread-local</artifactId>
+            <version>${ttl.version}</version>
+        </dependency>
+        <!--spring-boot-configuration-processor-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 </project>

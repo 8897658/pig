@@ -116,6 +116,11 @@
             </dependency>
             <dependency>
                 <groupId>com.pig4cloud</groupId>
+                <artifactId>pig-common-tenant</artifactId>
+                <version>${pig.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.pig4cloud</groupId>
                 <artifactId>pig-upms-api</artifactId>
                 <version>${pig.version}</version>
             </dependency>
