@@ -1863,4 +1863,52 @@ CREATE TABLE `gen_create_table` (
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '删除标记',
   PRIMARY KEY (`id`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ROW_FORMAT=DYNAMIC COMMENT='自动创建表管理';
 
+-- ----------------------------
+-- Table structure for sys_tenant
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_tenant`;
+CREATE TABLE `sys_tenant` (
+  `id` bigint NOT NULL COMMENT '租户ID',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户名称',
+  `code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '租户编码',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '状态：0-正常，1-禁用',
+  `expire_time` datetime DEFAULT NULL COMMENT '过期时间',
+  `contact_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '联系人',
+  `contact_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '联系电话',
+  `contact_email` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '联系邮箱',
+  `remark` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标记：0-正常，1-已删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='租户信息表';
+
+-- ----------------------------
+-- Records of sys_tenant
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_tenant` (`id`, `name`, `code`, `status`, `expire_time`, `contact_name`, `contact_phone`, `contact_email`, `remark`, `create_by`, `create_time`, `update_by`, `update_time`, `del_flag`) VALUES (1, '默认租户', 'DEFAULT', '0', NULL, '管理员', '13800138000', 'admin@pig4cloud.com', '系统默认租户', 'admin', NOW(), 'admin', NOW(), '0');
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_data_scope
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_data_scope`;
+CREATE TABLE `sys_data_scope` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `scope_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '数据范围类型：0-全部，1-自定义，2-本部门，3-本部门及以下，4-仅本人',
+  `scope_value` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '数据范围值（自定义时存储部门ID列表）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新人',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '0' COMMENT '删除标记：0-正常，1-已删除',
+  PRIMARY KEY (`id`),
+  KEY `idx_role_id` (`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='角色数据权限表';
+
 SET FOREIGN_KEY_CHECKS = 1;
