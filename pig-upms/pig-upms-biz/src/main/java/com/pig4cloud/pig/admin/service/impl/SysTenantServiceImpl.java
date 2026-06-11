@@ -54,7 +54,7 @@ public class SysTenantServiceImpl extends ServiceImpl<SysTenantMapper, SysTenant
 	 */
 	@Override
 	public SysTenant getByDomain(String domain) {
-		return this.getOne(Wrappers.<SysTenant>lambdaQuery().eq(SysTenant::getCode, domain));
+		return this.getOne(Wrappers.<SysTenant>lambdaQuery().eq(SysTenant::getDomain, domain));
 	}
 
 }
