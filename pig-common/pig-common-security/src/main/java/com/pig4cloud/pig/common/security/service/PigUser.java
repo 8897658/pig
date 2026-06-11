@@ -120,6 +120,18 @@ public class PigUser extends User implements OAuth2AuthenticatedPrincipal {
 	private LocalDateTime passwordModifyTime;
 
 	/**
+	 * 租户ID
+	 */
+	@Getter
+	private Long tenantId;
+
+	/**
+	 * 数据权限范围
+	 */
+	@Getter
+	private Integer dataScope;
+
+	/**
 	 * Construct the <code>User</code> with the details required by
 	 * {@link DaoAuthenticationProvider}.
 	 * @param id 用户ID
@@ -152,7 +164,8 @@ public class PigUser extends User implements OAuth2AuthenticatedPrincipal {
 			@JsonProperty("credentialsNonExpired") boolean credentialsNonExpired,
 			@JsonProperty("passwordModifyTime") LocalDateTime passwordModifyTime,
 			@JsonProperty("accountNonLocked") boolean accountNonLocked,
-			@JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities) {
+			@JsonProperty("authorities") Collection<? extends GrantedAuthority> authorities,
+			@JsonProperty("tenantId") Long tenantId, @JsonProperty("dataScope") Integer dataScope) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 		this.id = id;
 		this.roleIds = roleIds;
@@ -166,6 +179,8 @@ public class PigUser extends User implements OAuth2AuthenticatedPrincipal {
 		this.email = email;
 		this.userType = userType;
 		this.passwordModifyTime = passwordModifyTime;
+		this.tenantId = tenantId;
+		this.dataScope = dataScope;
 	}
 
 	@Override
