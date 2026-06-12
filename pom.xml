@@ -106,6 +106,7 @@
         <module>pig-visual</module>
         <module>pig-process</module>
         <module>pig-report</module>
+        <module>pig-pay</module>
     </modules>
 
     <repositories>
