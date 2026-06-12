@@ -105,9 +105,23 @@
         <module>pig-common</module>
         <module>pig-visual</module>
         <module>pig-process</module>
-        <!-- Temporarily disabled for Spring Boot 4 compatibility -->
-        <!-- <module>pig-report</module> -->
+        <module>pig-report</module>
     </modules>
+
+    <repositories>
+        <!-- JEECG 仓库 - 用于 jimureport 依赖 -->
+        <repository>
+            <id>jeecg</id>
+            <name>Jeecg Repository</name>
+            <url>https://maven.jeecg.org/nexus/content/repositories/jeecg</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
