@@ -107,6 +107,7 @@
         <module>pig-process</module>
         <module>pig-report</module>
         <module>pig-pay</module>
+        <module>pig-wechat</module>
     </modules>
 
     <repositories>
