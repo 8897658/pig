@@ -21,10 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.cache.autoconfigure.CacheManagerCustomizers;
-import org.springframework.boot.cache.autoconfigure.CacheProperties;
+import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
+import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +47,7 @@ import java.util.Objects;
  * @author L.cm
  */
 @Configuration
-@AutoConfigureAfter({ DataRedisAutoConfiguration.class })
+@AutoConfigureAfter({ RedisAutoConfiguration.class })
 @ConditionalOnBean({ RedisConnectionFactory.class })
 @EnableConfigurationProperties(CacheProperties.class)
 @SuppressWarnings("removal")

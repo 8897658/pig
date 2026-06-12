@@ -27,10 +27,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.core.annotation.AnnotationTemplateExpressionDefaults;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
@@ -58,11 +57,11 @@ public class PigResourceServerConfiguration {
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		PathPatternRequestMatcher[] permitMatchers = permitAllUrl.getIgnoreUrls()
+		AntPathRequestMatcher[] permitMatchers = permitAllUrl.getIgnoreUrls()
 			.stream()
-			.map(url -> PathPatternRequestMatcher.withDefaults().matcher(url))
+			.map(AntPathRequestMatcher::new)
 			.toList()
-			.toArray(new PathPatternRequestMatcher[] {});
+			.toArray(new AntPathRequestMatcher[] {});
 
 		http.authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers(permitMatchers)
 			.permitAll()
@@ -89,15 +88,6 @@ public class PigResourceServerConfiguration {
 		}
 
 		return http.build();
-	}
-
-	/**
-	 * 创建并返回一个支持自定义权限表达式的默认模板实例
-	 * @return {@link AnnotationTemplateExpressionDefaults} 权限表达式默认模板实例
-	 */
-	@Bean
-	AnnotationTemplateExpressionDefaults prePostTemplateDefaults() {
-		return new AnnotationTemplateExpressionDefaults();
 	}
 
 }
