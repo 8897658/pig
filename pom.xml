@@ -108,6 +108,7 @@
         <module>pig-report</module>
         <module>pig-pay</module>
         <module>pig-wechat</module>
+        <module>pig-mobile</module>
     </modules>
 
     <repositories>

@@ -1,0 +1,27 @@
+server:
+  port: 6003
+
+spring:
+  application:
+    name: pig-mobile
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_HOST:pig-register}:${NACOS_PORT:8848}
+        username: ${nacos.username:nacos}
+        password: ${nacos.password:nacos}
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        username: ${spring.cloud.nacos.discovery.username}
+        password: ${spring.cloud.nacos.discovery.password}
+  config:
+    import:
+      - optional:nacos:${spring.application.name}.yml
+      - optional:nacos:pig.yml
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DB:pig}?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      username: ${MYSQL_USER:root}
+      password: ${MYSQL_PASSWORD:root}
