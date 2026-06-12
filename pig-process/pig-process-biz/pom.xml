@@ -77,6 +77,11 @@
             <groupId>com.pig4cloud</groupId>
             <artifactId>pig-common-sentinel</artifactId>
         </dependency>
+        <!--多租户依赖-->
+        <dependency>
+            <groupId>com.pig4cloud</groupId>
+            <artifactId>pig-common-tenant</artifactId>
+        </dependency>
         <!--mybatis-->
         <dependency>
             <groupId>com.baomidou</groupId>

@@ -104,8 +104,8 @@
         <module>pig-upms</module>
         <module>pig-common</module>
         <module>pig-visual</module>
+        <module>pig-process</module>
         <!-- Temporarily disabled for Spring Boot 4 compatibility -->
-        <!-- <module>pig-process</module> -->
         <!-- <module>pig-report</module> -->
     </modules>
 
