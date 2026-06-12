@@ -1944,3 +1944,203 @@ CREATE TABLE `sys_gateway_route` (
   UNIQUE KEY `uk_route_id` (`route_id`),
   KEY `idx_tenant_id` (`tenant_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='网关路由配置表';
+
+-- =====================================================================
+-- M3: 支付、公众号/小程序与移动端服务数据库表
+-- =====================================================================
+
+-- ----------------------------
+-- Table structure for pay_order
+-- ----------------------------
+DROP TABLE IF EXISTS `pay_order`;
+CREATE TABLE `pay_order` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL DEFAULT '0' COMMENT '租户ID',
+  `order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商户订单号',
+  `channel_order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '渠道订单号',
+  `channel` tinyint NOT NULL COMMENT '支付渠道：1-微信，2-支付宝，3-银联',
+  `amount` decimal(12,2) NOT NULL COMMENT '支付金额（元）',
+  `status` tinyint DEFAULT '0' COMMENT '状态：0-待支付，1-支付中，2-支付成功，3-支付失败',
+  `subject` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '订单标题',
+  `body` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '订单描述',
+  `notify_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '回调地址',
+  `expire_time` datetime DEFAULT NULL COMMENT '过期时间',
+  `pay_time` datetime DEFAULT NULL COMMENT '支付时间',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_order_no` (`order_no`),
+  KEY `idx_tenant_id` (`tenant_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='支付订单表';
+
+-- ----------------------------
+-- Table structure for pay_refund
+-- ----------------------------
+DROP TABLE IF EXISTS `pay_refund`;
+CREATE TABLE `pay_refund` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL DEFAULT '0' COMMENT '租户ID',
+  `refund_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '商户退款单号',
+  `channel_refund_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '渠道退款单号',
+  `order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '原订单号',
+  `refund_amount` decimal(12,2) NOT NULL COMMENT '退款金额',
+  `status` tinyint DEFAULT '0' COMMENT '状态：0-待退款，1-退款中，2-退款成功，3-退款失败',
+  `reason` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '退款原因',
+  `refund_time` datetime DEFAULT NULL COMMENT '退款时间',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_refund_no` (`refund_no`),
+  KEY `idx_order_no` (`order_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='退款订单表';
+
+-- ----------------------------
+-- Table structure for pay_channel_config
+-- ----------------------------
+DROP TABLE IF EXISTS `pay_channel_config`;
+CREATE TABLE `pay_channel_config` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL COMMENT '租户ID',
+  `channel` tinyint NOT NULL COMMENT '支付渠道：1-微信，2-支付宝，3-银联',
+  `app_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '应用ID',
+  `mch_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '商户号',
+  `api_key` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'API密钥（加密存储）',
+  `cert_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '证书信息（加密存储）',
+  `notify_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '回调地址',
+  `status` tinyint DEFAULT '1' COMMENT '状态：0-禁用，1-启用',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_channel` (`tenant_id`, `channel`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='支付渠道配置表';
+
+-- ----------------------------
+-- Table structure for pay_profit_sharing
+-- ----------------------------
+DROP TABLE IF EXISTS `pay_profit_sharing`;
+CREATE TABLE `pay_profit_sharing` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL DEFAULT '0' COMMENT '租户ID',
+  `order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '订单号',
+  `receiver_account` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分账接收方账号',
+  `receiver_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '分账接收方名称',
+  `amount` decimal(12,2) NOT NULL COMMENT '分账金额',
+  `description` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '分账描述',
+  `status` tinyint DEFAULT '0' COMMENT '状态：0-待分账，1-分账中，2-分账成功，3-分账失败',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_order_no` (`order_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='分账记录表';
+
+-- ----------------------------
+-- Table structure for wx_account
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_account`;
+CREATE TABLE `wx_account` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL COMMENT '租户ID',
+  `account_type` tinyint NOT NULL COMMENT '账号类型：1-公众号，2-小程序',
+  `app_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'AppID',
+  `app_secret` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'AppSecret（加密存储）',
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '消息Token',
+  `aes_key` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '消息加密密钥',
+  `original_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '原始ID',
+  `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '账号名称',
+  `status` tinyint DEFAULT '1' COMMENT '状态：0-禁用，1-启用',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_appid` (`tenant_id`, `app_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='微信账号配置表';
+
+-- ----------------------------
+-- Table structure for wx_user
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_user`;
+CREATE TABLE `wx_user` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL DEFAULT '0' COMMENT '租户ID',
+  `app_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '来源AppID',
+  `union_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT 'UnionID（用于打通公众号和小程序）',
+  `open_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'OpenID',
+  `nickname` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '昵称',
+  `head_img_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '头像',
+  `sex` tinyint DEFAULT NULL COMMENT '性别',
+  `country` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '国家',
+  `province` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '省份',
+  `city` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '城市',
+  `subscribe` tinyint DEFAULT '1' COMMENT '是否关注：0-未关注，1-已关注',
+  `subscribe_time` datetime DEFAULT NULL COMMENT '关注时间',
+  `unsubscribe_time` datetime DEFAULT NULL COMMENT '取消关注时间',
+  `user_id` bigint DEFAULT NULL COMMENT '关联Pig系统用户ID',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_app_openid` (`tenant_id`, `app_id`, `open_id`),
+  KEY `idx_union_id` (`union_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='微信用户表';
+
+-- ----------------------------
+-- Table structure for wx_template_message
+-- ----------------------------
+DROP TABLE IF EXISTS `wx_template_message`;
+CREATE TABLE `wx_template_message` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL DEFAULT '0' COMMENT '租户ID',
+  `app_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'AppID',
+  `open_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'OpenID',
+  `template_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模板ID',
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '模板数据（JSON）',
+  `status` tinyint DEFAULT '0' COMMENT '状态：0-待发送，1-发送成功，2-发送失败',
+  `send_time` datetime DEFAULT NULL COMMENT '发送时间',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_open_id` (`open_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='模板消息发送记录表';
+
+-- ----------------------------
+-- Table structure for mobile_device
+-- ----------------------------
+DROP TABLE IF EXISTS `mobile_device`;
+CREATE TABLE `mobile_device` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL DEFAULT '0' COMMENT '租户ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `device_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '设备唯一标识',
+  `device_type` tinyint NOT NULL COMMENT '设备类型：1-iOS，2-Android，3-H5',
+  `device_name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设备名称',
+  `device_model` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设备型号',
+  `os_version` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '系统版本',
+  `push_token` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '推送Token',
+  `fingerprint` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设备指纹',
+  `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
+  `last_login_ip` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '最后登录IP',
+  `status` tinyint DEFAULT '1' COMMENT '状态：0-禁用，1-启用',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_tenant_user_device` (`tenant_id`, `user_id`, `device_id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='移动设备表';
+
+-- ----------------------------
+-- Table structure for mobile_push_message
+-- ----------------------------
+DROP TABLE IF EXISTS `mobile_push_message`;
+CREATE TABLE `mobile_push_message` (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `tenant_id` bigint NOT NULL DEFAULT '0' COMMENT '租户ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `device_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '设备ID',
+  `title` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '消息标题',
+  `content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '消息内容',
+  `payload` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '扩展数据（JSON）',
+  `push_channel` tinyint DEFAULT NULL COMMENT '推送渠道',
+  `status` tinyint DEFAULT '0' COMMENT '状态：0-待发送，1-发送中，2-发送成功，3-发送失败',
+  `read_status` tinyint DEFAULT '0' COMMENT '阅读状态：0-未读，1-已读',
+  `send_time` datetime DEFAULT NULL COMMENT '发送时间',
+  `read_time` datetime DEFAULT NULL COMMENT '阅读时间',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC COMMENT='推送消息表';
