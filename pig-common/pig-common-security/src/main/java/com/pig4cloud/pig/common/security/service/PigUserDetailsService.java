@@ -99,8 +99,8 @@ public interface PigUserDetailsService extends UserDetailsService, Ordered {
 				true, true, UserTypeEnum.TOB.getStatus(),
 				!CommonConstants.STATUS_LOCK.equals(info.getPasswordExpireFlag()) // 密码过期判断
 				, Objects.isNull(info.getPasswordModifyTime()) ? info.getCreateTime() : info.getPasswordModifyTime(),
-				!CommonConstants.STATUS_LOCK.equals(info.getLockFlag()), authorities,
-				info.getTenantId(), info.getDataScope());
+				!CommonConstants.STATUS_LOCK.equals(info.getLockFlag()), authorities, info.getTenantId(),
+				info.getDataScope());
 	}
 
 	/**

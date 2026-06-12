@@ -17,8 +17,7 @@
 
 package com.pig4cloud.pig.gateway.filter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -34,10 +33,9 @@ import org.springframework.web.server.ServerWebExchange;
  * <p>
  * 自定义basic认证，针对特殊场景使用
  */
+@Slf4j
 @Component
 public class HttpBasicGatewayFilter extends AbstractGatewayFilterFactory {
-
-	private static final Logger log = LoggerFactory.getLogger(HttpBasicGatewayFilter.class);
 
 	@Override
 	public GatewayFilter apply(Object config) {

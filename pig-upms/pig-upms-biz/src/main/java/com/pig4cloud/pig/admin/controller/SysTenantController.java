@@ -94,9 +94,10 @@ public class SysTenantController {
 	@GetMapping("/page")
 	@HasPermission("sys_tenant_view")
 	public R getTenantPage(@ParameterObject Page page, @ParameterObject SysTenant sysTenant) {
-		return R.ok(sysTenantService.page(page, Wrappers.<SysTenant>lambdaQuery()
-			.like(StrUtil.isNotBlank(sysTenant.getName()), SysTenant::getName, sysTenant.getName())
-			.like(StrUtil.isNotBlank(sysTenant.getCode()), SysTenant::getCode, sysTenant.getCode())));
+		return R.ok(sysTenantService.page(page,
+				Wrappers.<SysTenant>lambdaQuery()
+					.like(StrUtil.isNotBlank(sysTenant.getName()), SysTenant::getName, sysTenant.getName())
+					.like(StrUtil.isNotBlank(sysTenant.getCode()), SysTenant::getCode, sysTenant.getCode())));
 	}
 
 	/**

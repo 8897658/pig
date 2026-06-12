@@ -54,41 +54,34 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
 
 	@Override
 	public Mono<Boolean> add(RouteDefinition routeDefinition) {
-		return routeDefinitionWriter.save(Mono.just(routeDefinition))
-			.then(Mono.fromRunnable(() -> {
-				publisher.publishEvent(new RefreshRoutesEvent(this));
-				log.info("添加路由成功: {}", routeDefinition.getId());
-			}))
-			.thenReturn(true)
-			.onErrorResume(e -> {
-				log.error("添加路由失败: {}", routeDefinition.getId(), e);
-				return Mono.just(false);
-			});
+		return routeDefinitionWriter.save(Mono.just(routeDefinition)).then(Mono.fromRunnable(() -> {
+			publisher.publishEvent(new RefreshRoutesEvent(this));
+			log.info("添加路由成功: {}", routeDefinition.getId());
+		})).thenReturn(true).onErrorResume(e -> {
+			log.error("添加路由失败: {}", routeDefinition.getId(), e);
+			return Mono.just(false);
+		});
 	}
 
 	@Override
 	public Mono<Boolean> update(RouteDefinition routeDefinition) {
-		return delete(routeDefinition.getId())
-			.flatMap(success -> {
-				if (success) {
-					return add(routeDefinition);
-				}
-				return Mono.just(false);
-			});
+		return delete(routeDefinition.getId()).flatMap(success -> {
+			if (success) {
+				return add(routeDefinition);
+			}
+			return Mono.just(false);
+		});
 	}
 
 	@Override
 	public Mono<Boolean> delete(String routeId) {
-		return routeDefinitionWriter.delete(Mono.just(routeId))
-			.then(Mono.fromRunnable(() -> {
-				publisher.publishEvent(new RefreshRoutesEvent(this));
-				log.info("删除路由成功: {}", routeId);
-			}))
-			.thenReturn(true)
-			.onErrorResume(e -> {
-				log.error("删除路由失败: {}", routeId, e);
-				return Mono.just(false);
-			});
+		return routeDefinitionWriter.delete(Mono.just(routeId)).then(Mono.fromRunnable(() -> {
+			publisher.publishEvent(new RefreshRoutesEvent(this));
+			log.info("删除路由成功: {}", routeId);
+		})).thenReturn(true).onErrorResume(e -> {
+			log.error("删除路由失败: {}", routeId, e);
+			return Mono.just(false);
+		});
 	}
 
 	@Override

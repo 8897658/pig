@@ -32,10 +32,9 @@ public class PriorityHeaderInitBinder {
 	/**
 	 * 初始化绑定器
 	 * <p>
-	 * 注意: addHeaderPredicate 方法在 Spring Framework 6.2+ 中可用。
-	 * 当前项目使用 Spring Boot 4.0.6 (Spring Framework 6.1.13)，此功能暂时禁用。
-	 * 升级到 Spring Boot 4.1+ (Spring Framework 6.2+) 后可启用。
-	 *
+	 * 注意: addHeaderPredicate 方法在 Spring Framework 6.2+ 中可用。 当前项目使用 Spring Boot 4.0.6
+	 * (Spring Framework 6.1.13)，此功能暂时禁用。 升级到 Spring Boot 4.1+ (Spring Framework 6.2+)
+	 * 后可启用。
 	 * @param binder 绑定规则
 	 */
 	@InitBinder

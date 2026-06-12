@@ -18,8 +18,7 @@
 package com.pig4cloud.pig.gateway.filter;
 
 import cn.hutool.core.util.StrUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpMethod;
@@ -32,10 +31,9 @@ import org.springframework.stereotype.Component;
  * @author lengleng
  * @date 2018/8/21 演示环境过滤处理
  */
+@Slf4j
 @Component
 public class PreviewGatewayFilter extends AbstractGatewayFilterFactory {
-
-	private static final Logger log = LoggerFactory.getLogger(PreviewGatewayFilter.class);
 
 	private static final String TOKEN = "token";
 

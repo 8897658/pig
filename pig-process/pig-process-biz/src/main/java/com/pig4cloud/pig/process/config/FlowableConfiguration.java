@@ -29,8 +29,8 @@ import java.util.function.Consumer;
 /**
  * Flowable 多租户配置
  * <p>
- * 通过实现 EngineConfigurationConfigurer 接口，配置 Flowable 引擎的多租户支持。
- * 租户信息从 TenantContextHolder 中获取，确保流程数据的租户隔离。
+ * 通过实现 EngineConfigurationConfigurer 接口，配置 Flowable 引擎的多租户支持。 租户信息从 TenantContextHolder
+ * 中获取，确保流程数据的租户隔离。
  *
  * @author lengleng
  * @date 2025-06-11
