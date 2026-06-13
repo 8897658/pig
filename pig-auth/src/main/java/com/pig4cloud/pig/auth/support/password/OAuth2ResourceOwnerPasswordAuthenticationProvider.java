@@ -2,8 +2,7 @@ package com.pig4cloud.pig.auth.support.password;
 
 import com.pig4cloud.pig.auth.support.base.OAuth2ResourceOwnerBaseAuthenticationProvider;
 import com.pig4cloud.pig.common.core.constant.SecurityConstants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -20,10 +19,9 @@ import java.util.Map;
  * @author jumuning
  * @description 处理用户名密码授权
  */
+@Slf4j
 public class OAuth2ResourceOwnerPasswordAuthenticationProvider
 		extends OAuth2ResourceOwnerBaseAuthenticationProvider<OAuth2ResourceOwnerPasswordAuthenticationToken> {
-
-	private static final Logger LOGGER = LogManager.getLogger(OAuth2ResourceOwnerPasswordAuthenticationProvider.class);
 
 	/**
 	 * Constructs an {@code OAuth2AuthorizationCodeAuthenticationProvider} using the
@@ -49,7 +47,7 @@ public class OAuth2ResourceOwnerPasswordAuthenticationProvider
 	@Override
 	public boolean supports(Class<?> authentication) {
 		boolean supports = OAuth2ResourceOwnerPasswordAuthenticationToken.class.isAssignableFrom(authentication);
-		LOGGER.debug("supports authentication=" + authentication + " returning " + supports);
+		log.debug("supports authentication={} returning {}", authentication, supports);
 		return supports;
 	}
 

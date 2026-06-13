@@ -7,8 +7,6 @@ import com.pig4cloud.pig.common.security.service.PigRedisOAuth2AuthorizationServ
 import com.pig4cloud.pig.common.security.util.OAuth2ErrorCodesExpand;
 import com.pig4cloud.pig.common.security.util.ScopeException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.authentication.*;
@@ -41,8 +39,6 @@ import java.util.function.Supplier;
 @Slf4j
 public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OAuth2ResourceOwnerBaseAuthenticationToken>
 		implements AuthenticationProvider {
-
-	private static final Logger LOGGER = LogManager.getLogger(OAuth2ResourceOwnerBaseAuthenticationProvider.class);
 
 	private static final String ERROR_URI = "https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1";
 
@@ -136,7 +132,7 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = buildToken(reqParameters);
 
-			LOGGER.debug("got usernamePasswordAuthenticationToken=" + usernamePasswordAuthenticationToken);
+			log.debug("got usernamePasswordAuthenticationToken=" + usernamePasswordAuthenticationToken);
 
 			Authentication usernamePasswordAuthentication = authenticationManager
 				.authenticate(usernamePasswordAuthenticationToken);
@@ -249,7 +245,7 @@ public abstract class OAuth2ResourceOwnerBaseAuthenticationProvider<T extends OA
 
 		this.authorizationService.save(authorization);
 
-		LOGGER.debug("returning OAuth2AccessTokenAuthenticationToken");
+		log.debug("returning OAuth2AccessTokenAuthenticationToken");
 
 		return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken, refreshToken,
 				Objects.requireNonNull(authorization.getAccessToken().getClaims()));
