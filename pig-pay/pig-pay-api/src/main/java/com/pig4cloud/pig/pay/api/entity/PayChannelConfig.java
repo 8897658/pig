@@ -19,6 +19,8 @@ package com.pig4cloud.pig.pay.api.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -52,24 +54,28 @@ public class PayChannelConfig extends Model<PayChannelConfig> {
 	/**
 	 * 支付渠道
 	 */
+	@NotNull(message = "支付渠道不能为空")
 	@Schema(description = "支付渠道")
 	private Integer channel;
 
 	/**
 	 * 应用ID
 	 */
+	@NotBlank(message = "应用ID不能为空")
 	@Schema(description = "应用ID")
 	private String appId;
 
 	/**
 	 * 商户号
 	 */
+	@NotBlank(message = "商户号不能为空")
 	@Schema(description = "商户号")
 	private String mchId;
 
 	/**
 	 * API密钥（加密存储）
 	 */
+	@NotBlank(message = "API密钥不能为空")
 	@Schema(description = "API密钥")
 	private String apiKey;
 
@@ -82,6 +88,7 @@ public class PayChannelConfig extends Model<PayChannelConfig> {
 	/**
 	 * 回调地址
 	 */
+	@NotBlank(message = "回调地址不能为空")
 	@Schema(description = "回调地址")
 	private String notifyUrl;
 

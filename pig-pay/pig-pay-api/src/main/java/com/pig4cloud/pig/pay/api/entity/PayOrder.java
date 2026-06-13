@@ -19,6 +19,9 @@ package com.pig4cloud.pig.pay.api.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -53,6 +56,7 @@ public class PayOrder extends Model<PayOrder> {
 	/**
 	 * 商户订单号
 	 */
+	@NotBlank(message = "订单号不能为空")
 	@Schema(description = "商户订单号")
 	private String orderNo;
 
@@ -65,12 +69,15 @@ public class PayOrder extends Model<PayOrder> {
 	/**
 	 * 支付渠道：1-微信，2-支付宝，3-银联
 	 */
+	@NotNull(message = "支付渠道不能为空")
 	@Schema(description = "支付渠道")
 	private Integer channel;
 
 	/**
 	 * 支付金额（元）
 	 */
+	@NotNull(message = "支付金额不能为空")
+	@Positive(message = "支付金额必须大于0")
 	@Schema(description = "支付金额（元）")
 	private BigDecimal amount;
 
@@ -83,6 +90,7 @@ public class PayOrder extends Model<PayOrder> {
 	/**
 	 * 订单标题
 	 */
+	@NotBlank(message = "订单标题不能为空")
 	@Schema(description = "订单标题")
 	private String subject;
 
