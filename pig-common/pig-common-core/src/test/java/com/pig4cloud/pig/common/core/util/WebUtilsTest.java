@@ -133,7 +133,7 @@ class WebUtilsTest {
 	void testGetCookieValNotFound() {
 		when(request.getCookies()).thenReturn(new Cookie[] { new Cookie("other", "value") });
 		String value = WebUtils.getCookieVal(request, "test");
-	 assertNull(value);
+		assertNull(value);
 	}
 
 	@Test

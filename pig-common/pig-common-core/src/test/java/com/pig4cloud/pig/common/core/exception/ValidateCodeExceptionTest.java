@@ -34,7 +34,7 @@ class ValidateCodeExceptionTest {
 	@DisplayName("无参构造")
 	void testNoArgsConstructor() {
 		ValidateCodeException ex = new ValidateCodeException();
-	 assertNull(ex.getMessage());
+		assertNull(ex.getMessage());
 	}
 
 	@Test

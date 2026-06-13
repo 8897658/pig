@@ -34,8 +34,8 @@ class CheckedExceptionTest {
 	@DisplayName("无参构造")
 	void testNoArgsConstructor() {
 		CheckedException ex = new CheckedException();
-	 assertNull(ex.getMessage());
-	 assertNull(ex.getCause());
+		assertNull(ex.getMessage());
+		assertNull(ex.getCause());
 	}
 
 	@Test
