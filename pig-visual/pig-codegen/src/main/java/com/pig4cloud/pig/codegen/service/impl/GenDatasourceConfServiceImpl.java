@@ -27,6 +27,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pig4cloud.pig.codegen.entity.GenDatasourceConf;
 import com.pig4cloud.pig.codegen.mapper.GenDatasourceConfMapper;
 import com.pig4cloud.pig.codegen.service.GenDatasourceConfService;
+import com.pig4cloud.pig.common.core.exception.BizException;
+import com.pig4cloud.pig.common.core.exception.CommonErrorCode;
 import com.pig4cloud.pig.common.core.util.SpringContextHolder;
 import com.pig4cloud.pig.common.datasource.util.DsConfTypeEnum;
 import com.pig4cloud.pig.common.datasource.util.DsTypeEnum;
@@ -177,7 +179,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 		}
 		catch (SQLException e) {
 			log.error("数据源配置 {} , 获取链接失败", conf.getName(), e);
-			throw new RuntimeException("数据库配置错误，链接失败");
+			throw new BizException(CommonErrorCode.DATABASE_ERROR, "数据库配置错误，链接失败", e);
 		}
 		return Boolean.TRUE;
 	}
