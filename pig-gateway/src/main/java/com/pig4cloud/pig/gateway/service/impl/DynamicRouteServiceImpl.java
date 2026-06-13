@@ -20,6 +20,7 @@ package com.pig4cloud.pig.gateway.service.impl;
 
 import com.pig4cloud.pig.gateway.service.DynamicRouteService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.event.RefreshRoutesEvent;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
@@ -30,9 +31,6 @@ import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * <p>
  * 动态路由服务实现类
@@ -41,11 +39,10 @@ import org.slf4j.LoggerFactory;
  * @author lengleng
  * @since 2026-06-11
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DynamicRouteServiceImpl implements DynamicRouteService {
-
-	private static final Logger log = LoggerFactory.getLogger(DynamicRouteServiceImpl.class);
 
 	private final RouteDefinitionWriter routeDefinitionWriter;
 

@@ -24,8 +24,7 @@ import com.pig4cloud.pig.common.core.util.R;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -61,11 +60,10 @@ import java.util.stream.Collectors;
  * @author lengleng
  * @date 2026-05-18
  */
+@Slf4j
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalBizExceptionHandler {
-
-	private static final Logger log = LoggerFactory.getLogger(GlobalBizExceptionHandler.class);
 
 	/**
 	 * JSON 序列化工具，用于解析 Feign 透传的远端 R 响应体。
