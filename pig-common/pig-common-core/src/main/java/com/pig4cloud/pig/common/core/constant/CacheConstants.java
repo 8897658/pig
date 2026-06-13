@@ -78,4 +78,9 @@ public interface CacheConstants {
 	 */
 	String SITE_CONFIG_DETAILS = "site_config_details";
 
+	/**
+	 * 系统配置缓存
+	 */
+	String SYS_CONFIG = "sys_config";
+
 }

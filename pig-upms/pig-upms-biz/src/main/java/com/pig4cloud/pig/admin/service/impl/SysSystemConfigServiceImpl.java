@@ -13,12 +13,15 @@ import com.pig4cloud.pig.admin.api.constant.SystemConfigTypeEnum;
 import com.pig4cloud.pig.admin.api.entity.SysSystemConfigEntity;
 import com.pig4cloud.pig.admin.mapper.SysSystemConfigMapper;
 import com.pig4cloud.pig.admin.service.SysSystemConfigService;
+import com.pig4cloud.pig.common.core.constant.CacheConstants;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.log.util.JacksonSensitiveFieldUtil;
 import lombok.SneakyThrows;
 import org.dromara.oa.api.OaSender;
 import org.dromara.oa.core.provider.factory.OaFactory;
 import org.dromara.sms4j.core.factory.SmsFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -48,6 +51,7 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 	 * @return {@link R }
 	 */
 	@Override
+	@Cacheable(value = CacheConstants.SYS_CONFIG, key = "#query.configType", unless = "#result.data.isEmpty()")
 	public R listSystemConfig(SysSystemConfigEntity query) {
 		List<SysSystemConfigEntity> configEntityList = baseMapper.selectList(Wrappers.query(query));
 		configEntityList.stream().forEach(systemConfig -> {
@@ -87,6 +91,7 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 	 */
 	@Override
 	@Transactional(rollbackFor = Exception.class)
+	@CacheEvict(value = CacheConstants.SYS_CONFIG, allEntries = true)
 	@SneakyThrows
 	public R updateSystemConfig(SysSystemConfigEntity sysSystemConfig) {
 		// 更新configValue ，如果 accessSecret,tokenId,sign 属性为空，则不更新以上属性

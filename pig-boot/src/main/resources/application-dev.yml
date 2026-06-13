@@ -11,6 +11,31 @@ spring:
       username: root
       password: root
       url: jdbc:mysql://pig-mysql:3306/pig?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
+      # 连接池性能优化配置
+      initial-size: 5
+      min-idle: 10
+      max-active: 50
+      max-wait: 60000
+      # 连接有效性检测
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # 连接泄漏检测
+      remove-abandoned: true
+      remove-abandoned-timeout: 180
+      # 连接保活配置
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      # 预编译缓存
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      # SQL监控
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 3000
 
 # 文件上传配置
 file:
