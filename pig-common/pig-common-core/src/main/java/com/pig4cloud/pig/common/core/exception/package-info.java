@@ -20,10 +20,11 @@
  * <p>
  * 提供统一的业务异常体系，包含：
  * <ul>
- *   <li>{@link com.pig4cloud.pig.common.core.exception.BizException} - 业务异常基类</li>
- *   <li>{@link com.pig4cloud.pig.common.core.exception.BizAssert} - 业务断言工具</li>
- *   <li>{@link com.pig4cloud.pig.common.core.exception.CommonErrorCode} - 通用错误码</li>
- *   <li>{@link com.pig4cloud.pig.common.core.exception.GlobalExceptionHandler} - 全局异常处理器</li>
+ * <li>{@link com.pig4cloud.pig.common.core.exception.BizException} - 业务异常基类</li>
+ * <li>{@link com.pig4cloud.pig.common.core.exception.BizAssert} - 业务断言工具</li>
+ * <li>{@link com.pig4cloud.pig.common.core.exception.CommonErrorCode} - 通用错误码</li>
+ * <li>{@link com.pig4cloud.pig.common.core.exception.GlobalExceptionHandler} -
+ * 全局异常处理器</li>
  * </ul>
  */
 package com.pig4cloud.pig.common.core.exception;

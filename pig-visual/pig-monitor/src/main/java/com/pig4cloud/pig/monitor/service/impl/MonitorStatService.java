@@ -14,7 +14,6 @@ import com.pig4cloud.pig.monitor.config.DruidMonitorConfigurer;
 import com.pig4cloud.pig.monitor.model.ServiceNode;
 import com.pig4cloud.pig.monitor.model.dto.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
@@ -49,16 +48,24 @@ public class MonitorStatService implements DruidStatServiceMBean {
 
 	private static final String DEFAULT_ORDERBY = "SQL";
 
+	private static final String RESULT_CODE_KEY = "ResultCode";
+
+	private static final String CONTENT_KEY = "Content";
+
 	/**
 	 * 以consul注册的服务的id为key,value为某个微服务节点
 	 */
 	public static Map<String, ServiceNode> serviceIdMap = new HashMap<>();
 
-	@Autowired
-	private DiscoveryClient discoveryClient;
+	private final DiscoveryClient discoveryClient;
 
-	@Autowired
-	private DruidMonitorConfigurer.MonitorProperties monitorProperties;
+	private final DruidMonitorConfigurer.MonitorProperties monitorProperties;
+
+	public MonitorStatService(DiscoveryClient discoveryClient,
+			DruidMonitorConfigurer.MonitorProperties monitorProperties) {
+		this.discoveryClient = discoveryClient;
+		this.monitorProperties = monitorProperties;
+	}
 
 	/**
 	 * 获取所有服务信息
@@ -204,9 +211,9 @@ public class MonitorStatService implements DruidStatServiceMBean {
 	}
 
 	public static String returnJSONResult(int resultCode, Object content) {
-		Map<String, Object> dataMap = new LinkedHashMap<String, Object>();
-		dataMap.put("ResultCode", resultCode);
-		dataMap.put("Content", content);
+		Map<String, Object> dataMap = new LinkedHashMap<>();
+		dataMap.put(RESULT_CODE_KEY, resultCode);
+		dataMap.put(CONTENT_KEY, content);
 		return JSONUtils.toJSONString(dataMap);
 	}
 
@@ -255,8 +262,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		String jsonString = JSON.toJSONString(maps);
 		JSONArray objects = JSON.parseArray(jsonString);
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("ResultCode", RESULT_CODE_SUCCESS);
-		jsonObject.put("Content", objects);
+		jsonObject.put(RESULT_CODE_KEY, RESULT_CODE_SUCCESS);
+		jsonObject.put(CONTENT_KEY, objects);
 		return jsonObject.toJSONString();
 	}
 
@@ -338,8 +345,8 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		String jsonString = JSON.toJSONString(maps);
 		JSONArray objects = JSON.parseArray(jsonString);
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("ResultCode", RESULT_CODE_SUCCESS);
-		jsonObject.put("Content", objects);
+		jsonObject.put(RESULT_CODE_KEY, RESULT_CODE_SUCCESS);
+		jsonObject.put(CONTENT_KEY, objects);
 		return jsonObject.toJSONString();
 	}
 
@@ -416,7 +423,7 @@ public class MonitorStatService implements DruidStatServiceMBean {
 		}
 
 		String[] parametersArray = parametersStr.split("&");
-		Map<String, String> parameters = new LinkedHashMap<String, String>();
+		Map<String, String> parameters = new LinkedHashMap<>();
 
 		for (String parameterStr : parametersArray) {
 			int index = parameterStr.indexOf("=");
