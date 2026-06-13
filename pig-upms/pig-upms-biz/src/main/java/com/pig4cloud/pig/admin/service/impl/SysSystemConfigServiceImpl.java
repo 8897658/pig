@@ -1,5 +1,4 @@
 package com.pig4cloud.pig.admin.service.impl;
-
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -20,12 +19,11 @@ import org.dromara.oa.api.OaSender;
 import org.dromara.oa.core.provider.factory.OaFactory;
 import org.dromara.sms4j.core.factory.SmsFactory;
 import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
+import org.springframework.transaction.annotation.Transactional;
 /**
  * SYS 系统配置服务实现
  *
@@ -35,13 +33,10 @@ import java.util.Objects;
 @Service
 public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMapper, SysSystemConfigEntity>
 		implements SysSystemConfigService {
-
 	private final SysMessageServiceImpl sysMessageServiceImpl;
-
 	public SysSystemConfigServiceImpl(SysMessageServiceImpl sysMessageServiceImpl) {
 		this.sysMessageServiceImpl = sysMessageServiceImpl;
 	}
-
 	/**
 	 * 列出系统配置
 	 * @param query 查询
@@ -55,10 +50,8 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 				systemConfig.setConfigValue(JacksonSensitiveFieldUtil.readStr(systemConfig.getConfigValue()));
 			}
 		});
-
 		return R.ok(configEntityList);
 	}
-
 	/**
 	 * 系统配置
 	 * @param page 页
@@ -78,16 +71,15 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 				systemConfig.setConfigValue(JacksonSensitiveFieldUtil.readStr(systemConfig.getConfigValue()));
 			}
 		});
-
 		return R.ok(pageResult);
 	}
-
 	/**
 	 * 更新系统配置
 	 * @param sysSystemConfig sys 系统配置
 	 * @return {@link R }
 	 */
 	@Override
+@Transactional(rollbackFor = Exception.class)
 	@SneakyThrows
 	public R updateSystemConfig(SysSystemConfigEntity sysSystemConfig) {
 		// 更新configValue ，如果 accessSecret,tokenId,sign 属性为空，则不更新以上属性
@@ -95,16 +87,13 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 		JSONObject oldValue = JSONUtil.parseObj(configEntity.getConfigValue());
 		JSONObject newValue = JSONUtil.parseObj(sysSystemConfig.getConfigValue());
 		BeanUtil.copyProperties(newValue, oldValue);
-
 		sysSystemConfig.setConfigValue(JSONUtil.toJsonPrettyStr(oldValue));
-
 		baseMapper.updateById(sysSystemConfig);
 		// 更新短信配置
 		if (SystemConfigTypeEnum.SMS.getValue().equals(sysSystemConfig.getConfigType())
 				&& Objects.nonNull(SmsFactory.getSmsBlend(sysSystemConfig.getConfigKey()))) {
 			SmsFactory.unregister(sysSystemConfig.getConfigKey());
 		}
-
 		if (SystemConfigTypeEnum.WEBHOOK.getValue().equals(sysSystemConfig.getConfigType())) {
 			// 更新webhook配置, 官方工具类没有提供清除方法，只能通过反射清除
 			Field configsField = ReflectUtil.getField(OaFactory.class, "CONFIGS");
@@ -114,5 +103,4 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 		}
 		return R.ok();
 	}
-
 }

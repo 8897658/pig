@@ -36,6 +36,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,6 +52,7 @@ import java.util.List;
 @RequestMapping("/post")
 @Tag(description = "post", name = "岗位信息表管理")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysPostController {
 
 	private final SysPostService sysPostService;
@@ -111,7 +113,7 @@ public class SysPostController {
 	@SysLog("新增岗位信息表")
 	@PostMapping
 	@HasPermission("sys_post_add")
-	public R save(@RequestBody SysPost sysPost) {
+	public R save(@Validated @RequestBody SysPost sysPost) {
 		return R.ok(sysPostService.save(sysPost));
 	}
 
@@ -124,7 +126,7 @@ public class SysPostController {
 	@SysLog("修改岗位信息表")
 	@PutMapping
 	@HasPermission("sys_post_edit")
-	public R updateById(@RequestBody SysPost sysPost) {
+	public R updateById(@Validated @RequestBody SysPost sysPost) {
 		return R.ok(sysPostService.updateById(sysPost));
 	}
 
@@ -137,7 +139,7 @@ public class SysPostController {
 	@SysLog("通过id删除岗位信息表")
 	@DeleteMapping
 	@HasPermission("sys_post_del")
-	public R removeById(@RequestBody Long[] ids) {
+	public R removeById(@Validated @RequestBody Long[] ids) {
 		return R.ok(sysPostService.removeBatchByIds(CollUtil.toList(ids)));
 	}
 

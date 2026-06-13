@@ -18,6 +18,8 @@
 package com.pig4cloud.pig.common.security.util;
 
 import cn.hutool.core.codec.Base64;
+import com.pig4cloud.pig.common.core.exception.BizException;
+import com.pig4cloud.pig.common.core.exception.CommonErrorCode;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +41,7 @@ public class AuthUtils {
 	/**
 	 * 从header 请求中的clientId/clientsecect
 	 * @param header header中的参数
-	 * @throws RuntimeException if the Basic header is not present or is not valid Base64
+	 * @throws BizException if the Basic header is not present or is not valid Base64
 	 */
 	@SneakyThrows
 	public String[] extractAndDecodeHeader(String header) {
@@ -50,7 +52,7 @@ public class AuthUtils {
 			decoded = Base64.decode(base64Token);
 		}
 		catch (IllegalArgumentException e) {
-			throw new RuntimeException("Failed to decode basic authentication token");
+			throw new BizException(CommonErrorCode.TOKEN_INVALID, "Basic 认证令牌解码失败", e);
 		}
 
 		String token = new String(decoded, StandardCharsets.UTF_8);
@@ -58,7 +60,7 @@ public class AuthUtils {
 		int delim = token.indexOf(":");
 
 		if (delim == -1) {
-			throw new RuntimeException("Invalid basic authentication token");
+			throw new BizException(CommonErrorCode.TOKEN_INVALID, "无效的 Basic 认证令牌格式");
 		}
 		return new String[] { token.substring(0, delim), token.substring(delim + 1) };
 	}
@@ -73,7 +75,7 @@ public class AuthUtils {
 		String header = request.getHeader(HttpHeaders.AUTHORIZATION);
 
 		if (header == null || !header.startsWith(BASIC_)) {
-			throw new RuntimeException("请求头中client信息为空");
+			throw new BizException(CommonErrorCode.TOKEN_INVALID, "请求头中client信息为空");
 		}
 
 		return extractAndDecodeHeader(header);

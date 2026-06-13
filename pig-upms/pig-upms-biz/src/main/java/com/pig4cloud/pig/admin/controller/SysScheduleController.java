@@ -31,6 +31,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpHeaders;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -47,6 +48,7 @@ import java.util.List;
 @RequestMapping("/schedule")
 @Tag(description = "schedule", name = "日程管理")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysScheduleController {
 
 	private final SysScheduleService sysScheduleService;
@@ -82,7 +84,7 @@ public class SysScheduleController {
 	@Operation(summary = "新增日程", description = "新增日程")
 	@SysLog("新增日程")
 	@PostMapping
-	public R save(@RequestBody SysScheduleEntity sysSchedule) {
+	public R save(@Validated @RequestBody SysScheduleEntity sysSchedule) {
 		return R.ok(sysScheduleService.save(sysSchedule));
 	}
 
@@ -94,7 +96,7 @@ public class SysScheduleController {
 	@Operation(summary = "修改日程", description = "修改日程")
 	@SysLog("修改日程")
 	@PutMapping
-	public R updateById(@RequestBody SysScheduleEntity sysSchedule) {
+	public R updateById(@Validated @RequestBody SysScheduleEntity sysSchedule) {
 		return R.ok(sysScheduleService.updateById(sysSchedule));
 	}
 
@@ -106,7 +108,7 @@ public class SysScheduleController {
 	@Operation(summary = "通过id删除日程", description = "通过id删除日程")
 	@SysLog("通过id删除日程")
 	@DeleteMapping
-	public R removeById(@RequestBody Long[] ids) {
+	public R removeById(@Validated @RequestBody Long[] ids) {
 		return R.ok(sysScheduleService.removeBatchByIds(CollUtil.toList(ids)));
 	}
 

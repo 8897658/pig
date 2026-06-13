@@ -39,6 +39,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.quartz.Scheduler;
 import org.springframework.http.HttpHeaders;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,6 +55,7 @@ import java.util.List;
 @RequestMapping("/sys-job")
 @Tag(description = "sys-job", name = "定时任务")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysJobController {
 
 	private final SysJobService sysJobService;
@@ -114,7 +116,7 @@ public class SysJobController {
 	@PostMapping
 	@HasPermission("job_sys_job_add")
 	@Operation(description = "新增定时任务")
-	public R save(@RequestBody SysJob sysJob) {
+	public R save(@Validated @RequestBody SysJob sysJob) {
 		// 初始化任务
 		taskUtil.addOrUpateJob(sysJob, scheduler);
 		sysJob.setJobStatus(PigQuartzEnum.JOB_STATUS_RELEASE.getType());
@@ -131,7 +133,7 @@ public class SysJobController {
 	@PutMapping
 	@HasPermission("job_sys_job_edit")
 	@Operation(description = "修改定时任务")
-	public R updateById(@RequestBody SysJob sysJob) {
+	public R updateById(@Validated @RequestBody SysJob sysJob) {
 		sysJob.setUpdateBy(SecurityUtils.getUser().getUsername());
 		SysJob querySysJob = this.sysJobService.getById(sysJob.getJobId());
 		if (PigQuartzEnum.JOB_STATUS_NOT_RUNNING.getType().equals(querySysJob.getJobStatus())) {

@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 表字段信息管理
@@ -43,6 +44,7 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
 	}
 
 	@Override
+		@Transactional(rollbackFor = Exception.class)
 	public void syncFieldList(String dsName, String tableName, List<GenTableColumnEntity> tableFieldList) {
 		Map<String, GenFieldType> fieldTypeMap = this.buildFieldTypeMap();
 		List<GenTableColumnEntity> existingFieldList = this.list(Wrappers.<GenTableColumnEntity>lambdaQuery()
@@ -87,6 +89,7 @@ public class GenTableColumnServiceImpl extends ServiceImpl<GenTableColumnMapper,
 	 * @param tableFieldList 表单字段列表
 	 */
 	@Override
+		@Transactional(rollbackFor = Exception.class)
 	public void updateTableField(String dsName, String tableName, List<GenTableColumnEntity> tableFieldList) {
 		AtomicInteger sort = new AtomicInteger();
 		this.updateBatchById(tableFieldList.stream().peek(field -> field.setSort(sort.getAndIncrement())).toList());

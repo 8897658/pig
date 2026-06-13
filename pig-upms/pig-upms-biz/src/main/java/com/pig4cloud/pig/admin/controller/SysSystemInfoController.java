@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Tag(description = "system", name = "系统监控")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysSystemInfoController {
 
 	private final SysSystemInfoService sysSystemInfoService;
@@ -68,7 +70,7 @@ public class SysSystemInfoController {
 	 */
 	@HasPermission("sys_site_config_edit")
 	@PutMapping("/site-config")
-	public R<Void> updateSiteConfig(@RequestBody SiteConfigDTO dto) {
+	public R<Void> updateSiteConfig(@Validated @RequestBody SiteConfigDTO dto) {
 		sysSiteConfigService.updateSiteConfig(dto);
 		return R.ok();
 	}

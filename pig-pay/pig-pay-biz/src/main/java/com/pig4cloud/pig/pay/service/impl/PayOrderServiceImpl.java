@@ -18,6 +18,8 @@ package com.pig4cloud.pig.pay.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pig4cloud.pig.common.core.exception.BizAssert;
+import com.pig4cloud.pig.common.core.exception.CommonErrorCode;
 import com.pig4cloud.pig.pay.api.entity.PayChannelConfig;
 import com.pig4cloud.pig.pay.api.entity.PayOrder;
 import com.pig4cloud.pig.pay.api.enums.PayChannelEnum;
@@ -27,6 +29,7 @@ import com.pig4cloud.pig.pay.service.PayOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -47,6 +50,7 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 	private final List<PayChannel> payChannels;
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Map<String, Object> createOrder(Integer channel, BigDecimal amount, String subject, String body) {
 		// 生成订单号
 		String orderNo = IdUtil.fastSimpleUUID();
@@ -64,29 +68,28 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 
 		// 获取渠道配置
 		PayChannelConfig config = getChannelConfig(channel);
-		if (config == null) {
-			throw new RuntimeException("支付渠道未配置");
-		}
+		BizAssert.notNull(config, CommonErrorCode.PAY_CHANNEL_NOT_CONFIG, "支付渠道[" + channel + "]未配置");
 
 		// 获取渠道实现
 		PayChannel payChannel = getPayChannel(channel);
-		if (payChannel == null) {
-			throw new RuntimeException("不支持的支付渠道");
-		}
+		BizAssert.notNull(payChannel, CommonErrorCode.PAY_CHANNEL_NOT_SUPPORT, "不支持的支付渠道[" + channel + "]");
 
 		// 创建支付
 		return payChannel.createPayment(order, config);
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public boolean handleNotify(Integer channel, String notifyData) {
 		PayChannelConfig config = getChannelConfig(channel);
 		if (config == null) {
+			log.warn("支付回调处理失败: 渠道[{}]配置不存在", channel);
 			return false;
 		}
 
 		PayChannel payChannel = getPayChannel(channel);
 		if (payChannel == null) {
+			log.warn("支付回调处理失败: 渠道[{}]实现不存在", channel);
 			return false;
 		}
 
@@ -115,23 +118,18 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public String refund(String orderNo, BigDecimal refundAmount, String reason) {
 		PayOrder order = this.lambdaQuery()
 			.eq(PayOrder::getOrderNo, orderNo)
 			.one();
-		if (order == null) {
-			throw new RuntimeException("订单不存在");
-		}
+		BizAssert.notNull(order, CommonErrorCode.PAY_ORDER_NOT_FOUND, "订单[" + orderNo + "]不存在");
 
 		PayChannelConfig config = getChannelConfig(order.getChannel());
-		if (config == null) {
-			throw new RuntimeException("支付渠道未配置");
-		}
+		BizAssert.notNull(config, CommonErrorCode.PAY_CHANNEL_NOT_CONFIG, "支付渠道未配置");
 
 		PayChannel payChannel = getPayChannel(order.getChannel());
-		if (payChannel == null) {
-			throw new RuntimeException("不支持的支付渠道");
-		}
+		BizAssert.notNull(payChannel, CommonErrorCode.PAY_CHANNEL_NOT_SUPPORT, "不支持的支付渠道");
 
 		return payChannel.refund(order, refundAmount, reason, config);
 	}

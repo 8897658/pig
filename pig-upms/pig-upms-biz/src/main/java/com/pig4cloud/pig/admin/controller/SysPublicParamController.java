@@ -36,6 +36,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpHeaders;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,6 +52,7 @@ import java.util.List;
 @RequestMapping("/param")
 @Tag(description = "param", name = "公共参数配置")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysPublicParamController {
 
 	private final SysPublicParamService sysPublicParamService;
@@ -125,7 +127,7 @@ public class SysPublicParamController {
 	@SysLog("新增公共参数")
 	@PostMapping
 	@HasPermission("sys_syspublicparam_add")
-	public R save(@RequestBody SysPublicParam sysPublicParam) {
+	public R save(@Validated @RequestBody SysPublicParam sysPublicParam) {
 		return R.ok(sysPublicParamService.save(sysPublicParam));
 	}
 
@@ -138,7 +140,7 @@ public class SysPublicParamController {
 	@SysLog("修改公共参数")
 	@PutMapping
 	@HasPermission("sys_syspublicparam_edit")
-	public R updateById(@RequestBody SysPublicParam sysPublicParam) {
+	public R updateById(@Validated @RequestBody SysPublicParam sysPublicParam) {
 		return sysPublicParamService.updateParam(sysPublicParam);
 	}
 

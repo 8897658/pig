@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.http.HttpHeaders;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,6 +38,7 @@ import java.util.List;
 @RequestMapping("/sysSensitiveWord")
 @Tag(description = "sysSensitiveWord", name = "敏感词管理")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysSensitiveWordController {
 
 	private final SysSensitiveWordService sysSensitiveWordService;
@@ -91,7 +93,7 @@ public class SysSensitiveWordController {
 	@SysLog("新增敏感词")
 	@PostMapping
 	@HasPermission("admin_sysSensitiveWord_add")
-	public R save(@RequestBody SysSensitiveWordEntity sysSensitiveWord) {
+	public R save(@Validated @RequestBody SysSensitiveWordEntity sysSensitiveWord) {
 		return R.ok(sysSensitiveWordService.saveSensitive(sysSensitiveWord));
 	}
 
@@ -104,7 +106,7 @@ public class SysSensitiveWordController {
 	@SysLog("修改敏感词")
 	@PutMapping
 	@HasPermission("admin_sysSensitiveWord_edit")
-	public R updateById(@RequestBody SysSensitiveWordEntity sysSensitiveWord) {
+	public R updateById(@Validated @RequestBody SysSensitiveWordEntity sysSensitiveWord) {
 		sysSensitiveWordService.updateById(sysSensitiveWord);
 		RedisUtils.execute((RedisCallback<Void>) connection -> {
 			connection.publish(CacheConstants.SENSITIVE_REDIS_RELOAD_TOPIC.getBytes(), "刷新敏感词缓存".getBytes());
@@ -122,7 +124,7 @@ public class SysSensitiveWordController {
 	@SysLog("查询敏感词")
 	@PostMapping("/match")
 	@HasPermission("admin_sysSensitiveWord_del")
-	public R match(@RequestBody SysSensitiveWordEntity sysSensitiveWord) {
+	public R match(@Validated @RequestBody SysSensitiveWordEntity sysSensitiveWord) {
 		return R.ok(sysSensitiveWordService.matchSensitiveWord(sysSensitiveWord));
 	}
 
@@ -135,7 +137,7 @@ public class SysSensitiveWordController {
 	@SysLog("通过id删除敏感词")
 	@DeleteMapping
 	@HasPermission("admin_sysSensitiveWord_del")
-	public R removeById(@RequestBody Long[] ids) {
+	public R removeById(@Validated @RequestBody Long[] ids) {
 		sysSensitiveWordService.removeBatchByIds(CollUtil.toList(ids));
 		RedisUtils.execute((RedisCallback<Void>) connection -> {
 			connection.publish(CacheConstants.SENSITIVE_REDIS_RELOAD_TOPIC.getBytes(), "刷新敏感词缓存".getBytes());

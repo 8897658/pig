@@ -9,6 +9,7 @@ import com.pig4cloud.pig.common.log.annotation.SysLog;
 import com.pig4cloud.pig.common.security.annotation.Inner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/register")
 @RequiredArgsConstructor
+@Validated
 public class SysRegisterController {
 
 	private final SysUserService userService;
@@ -33,7 +35,7 @@ public class SysRegisterController {
 	@SysLog("注册用户")
 	@PostMapping("/user")
 	@ConditionalOnProperty(name = "register.user", matchIfMissing = true)
-	public R<Boolean> registerUser(@RequestBody RegisterUserDTO userDto) {
+	public R<Boolean> registerUser(@Validated @RequestBody RegisterUserDTO userDto) {
 		if (!YesNoEnum.YES.getCode().equals(ParamResolver.getStr("SITE_REGISTER_ENABLE", YesNoEnum.NO.getCode()))) {
 			return R.failed("系统已关闭注册功能");
 		}
@@ -47,7 +49,7 @@ public class SysRegisterController {
 	 */
 	@SysLog("重置用户密码")
 	@PostMapping("/password")
-	public R<Boolean> resetUserPassword(@RequestBody RegisterUserDTO userDto) {
+	public R<Boolean> resetUserPassword(@Validated @RequestBody RegisterUserDTO userDto) {
 		return userService.resetUserPassword(userDto);
 	}
 
@@ -59,7 +61,7 @@ public class SysRegisterController {
 	 */
 	@SysLog("找回用户密码")
 	@PostMapping("/forget/{code}")
-	public R<Boolean> forgetUserPassword(@RequestBody RegisterUserDTO userDto, @PathVariable String code) {
+	public R<Boolean> forgetUserPassword(@Validated @RequestBody RegisterUserDTO userDto, @PathVariable String code) {
 		return userService.forgetUserPassword(userDto, code);
 	}
 

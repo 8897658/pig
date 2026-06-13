@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 敏感词
@@ -44,6 +45,7 @@ public class SysSensitiveWordServiceImpl extends ServiceImpl<SysSensitiveWordMap
 	 * @return success/false
 	 */
 	@Override
+		@Transactional(rollbackFor = Exception.class)
 	public Boolean saveSensitive(SysSensitiveWordEntity sysSensitiveWord) {
 		List<SysSensitiveWordEntity> wordEntityList = baseMapper
 			.selectList(Wrappers.<SysSensitiveWordEntity>lambdaQuery()

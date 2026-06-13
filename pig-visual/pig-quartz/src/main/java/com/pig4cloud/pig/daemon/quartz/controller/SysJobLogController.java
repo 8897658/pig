@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/sys-job-log")
 @Tag(description = "sys-job-log", name = "定时任务日志")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysJobLogController {
 
 	private final SysJobLogService sysJobLogService;
@@ -58,7 +60,7 @@ public class SysJobLogController {
 
 	@DeleteMapping
 	@Operation(description = "批量删除日志")
-	public R deleteLogs(@RequestBody Long[] ids) {
+	public R deleteLogs(@Validated @RequestBody Long[] ids) {
 		return R.ok(sysJobLogService.removeBatchByIds(CollUtil.toList(ids)));
 	}
 

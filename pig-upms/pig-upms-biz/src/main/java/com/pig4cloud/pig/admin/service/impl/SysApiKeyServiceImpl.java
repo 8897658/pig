@@ -31,11 +31,14 @@ import com.pig4cloud.pig.admin.mapper.SysApiKeyMapper;
 import com.pig4cloud.pig.admin.service.SysApiKeyService;
 import com.pig4cloud.pig.admin.service.SysUserService;
 import com.pig4cloud.pig.common.core.constant.CacheConstants;
+import com.pig4cloud.pig.common.core.exception.BizException;
+import com.pig4cloud.pig.common.core.exception.CommonErrorCode;
 import com.pig4cloud.pig.common.core.util.R;
 import com.pig4cloud.pig.common.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -65,6 +68,7 @@ public class SysApiKeyServiceImpl extends ServiceImpl<SysApiKeyMapper, SysApiKey
 	 * 校验密码、数量上限，生成并持久化 API Key
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public R<String> createApiKey(ApiKeyCreateDTO dto) {
 		String username = SecurityUtils.getUser().getUsername();
 		R checkResult = userService.checkPassword(username, dto.getPassword());
@@ -99,6 +103,7 @@ public class SysApiKeyServiceImpl extends ServiceImpl<SysApiKeyMapper, SysApiKey
 	 * 校验归属权，白名单更新字段，清除缓存
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public R<Void> updateApiKey(SysApiKey apiKey) {
 		SysApiKey existing = this.getById(apiKey.getId());
 		if (existing == null || !existing.getUserId().equals(SecurityUtils.getUser().getId())) {
@@ -119,6 +124,7 @@ public class SysApiKeyServiceImpl extends ServiceImpl<SysApiKeyMapper, SysApiKey
 	 * 校验归属权，删除记录，清除缓存
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public R<Void> deleteApiKey(Long id) {
 		SysApiKey existing = this.getById(id);
 		if (existing == null || !existing.getUserId().equals(SecurityUtils.getUser().getId())) {
@@ -133,6 +139,7 @@ public class SysApiKeyServiceImpl extends ServiceImpl<SysApiKeyMapper, SysApiKey
 	 * 批量清除缓存后批量删除
 	 */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public R<Boolean> deleteBatchApiKey(Long[] ids) {
 		CollUtil.toList(ids).forEach(id -> {
 			SysApiKey existing = this.getById(id);
@@ -167,7 +174,7 @@ public class SysApiKeyServiceImpl extends ServiceImpl<SysApiKeyMapper, SysApiKey
 			return HexFormat.of().formatHex(hash);
 		}
 		catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("SHA-256 algorithm not available", e);
+			throw new BizException(CommonErrorCode.SYSTEM_ERROR, "SHA-256 算法不可用", e);
 		}
 	}
 

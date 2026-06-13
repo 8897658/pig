@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Comparator;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 角色首页组件配置 Service 实现
@@ -63,6 +64,7 @@ public class SysRoleWidgetServiceImpl extends ServiceImpl<SysRoleWidgetMapper, S
 	 * @return 操作成功返回 true
 	 */
 	@Override
+		@Transactional(rollbackFor = Exception.class)
 	public boolean saveOrUpdateByRoleId(SysRoleWidget sysRoleWidget) {
 		SysRoleWidget existing = getOne(
 				Wrappers.<SysRoleWidget>lambdaQuery().eq(SysRoleWidget::getRoleId, sysRoleWidget.getRoleId()));

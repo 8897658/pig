@@ -26,6 +26,7 @@ import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.cloud.gateway.route.RouteDefinitionWriter;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -53,6 +54,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
 	private final ApplicationEventPublisher publisher;
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Mono<Boolean> add(RouteDefinition routeDefinition) {
 		return routeDefinitionWriter.save(Mono.just(routeDefinition)).then(Mono.fromRunnable(() -> {
 			publisher.publishEvent(new RefreshRoutesEvent(this));
@@ -64,6 +66,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Mono<Boolean> update(RouteDefinition routeDefinition) {
 		return delete(routeDefinition.getId()).flatMap(success -> {
 			if (success) {
@@ -74,6 +77,7 @@ public class DynamicRouteServiceImpl implements DynamicRouteService {
 	}
 
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public Mono<Boolean> delete(String routeId) {
 		return routeDefinitionWriter.delete(Mono.just(routeId)).then(Mono.fromRunnable(() -> {
 			publisher.publishEvent(new RefreshRoutesEvent(this));

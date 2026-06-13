@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpHeaders;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ import java.util.List;
 @RequestMapping("/system-config")
 @Tag(description = "sysSystemConfig", name = "系统配置管理")
 @SecurityRequirement(name = HttpHeaders.AUTHORIZATION)
+@Validated
 public class SysSystemConfigController {
 
 	private final SysSystemConfigService sysSystemConfigService;
@@ -70,7 +72,7 @@ public class SysSystemConfigController {
 	@SysLog("新增系统配置")
 	@PostMapping
 	@HasPermission("sys_message_add")
-	public R save(@RequestBody SysSystemConfigEntity sysSystemConfig) {
+	public R save(@Validated @RequestBody SysSystemConfigEntity sysSystemConfig) {
 		return R.ok(sysSystemConfigService.save(sysSystemConfig));
 	}
 
@@ -83,7 +85,7 @@ public class SysSystemConfigController {
 	@SysLog("修改系统配置")
 	@PutMapping
 	@HasPermission("sys_message_edit")
-	public R updateById(@RequestBody SysSystemConfigEntity sysSystemConfig) {
+	public R updateById(@Validated @RequestBody SysSystemConfigEntity sysSystemConfig) {
 		return sysSystemConfigService.updateSystemConfig(sysSystemConfig);
 	}
 
@@ -96,7 +98,7 @@ public class SysSystemConfigController {
 	@SysLog("通过id删除系统配置")
 	@DeleteMapping
 	@HasPermission("sys_message_del")
-	public R removeById(@RequestBody Long[] ids) {
+	public R removeById(@Validated @RequestBody Long[] ids) {
 		return R.ok(sysSystemConfigService.removeBatchByIds(CollUtil.toList(ids)));
 	}
 

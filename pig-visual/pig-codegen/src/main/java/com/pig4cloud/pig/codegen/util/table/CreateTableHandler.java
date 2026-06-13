@@ -18,6 +18,8 @@ package com.pig4cloud.pig.codegen.util.table;
 
 import com.pig4cloud.pig.codegen.util.table.enums.TableModelEnum;
 import com.pig4cloud.pig.codegen.util.table.model.TableInfo;
+import com.pig4cloud.pig.common.core.exception.BizException;
+import com.pig4cloud.pig.common.core.exception.CommonErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.anyline.metadata.Table;
@@ -48,10 +50,12 @@ public class CreateTableHandler {
 	 */
 	public Boolean createTable(String dsName, TableInfo tableInfo) {
 		if (tableInfo.getColumns() == null || tableInfo.getColumns().isEmpty()) {
-			throw new RuntimeException("自动创建表[" + tableInfo.getName() + "]中至少需要一个字段");
+			throw new BizException(CommonErrorCode.PARAM_ERROR,
+				"自动创建表[" + tableInfo.getName() + "]中至少需要一个字段");
 		}
 		if (!TableModelEnum.CREATE.name().toLowerCase().equals(tableInfo.getModel())) {
-			throw new RuntimeException("自动创建表[" + tableInfo.getModel() + "]模式的处理未找到,请检查");
+			throw new BizException(CommonErrorCode.PARAM_ERROR,
+				"自动创建表[" + tableInfo.getModel() + "]模式的处理未找到,请检查");
 		}
 		try {
 			AnylineService service = ServiceProxy.service(dsName);
@@ -64,7 +68,7 @@ public class CreateTableHandler {
 			log.info("自动创建表处理完成!");
 		}
 		catch (Exception e) {
-			throw new RuntimeException("自动创建表异常", e);
+			throw new BizException(CommonErrorCode.DATABASE_ERROR, "自动创建表异常", e);
 		}
 		return Boolean.TRUE;
 	}
