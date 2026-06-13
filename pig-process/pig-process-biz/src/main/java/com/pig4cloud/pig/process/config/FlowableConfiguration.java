@@ -25,13 +25,12 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Flowable 流程引擎配置
  * <p>
- * 通过实现 EngineConfigurationConfigurer 接口，配置 Flowable 引擎。
- * Flowable 7.x 的多租户支持通过在部署、启动流程时设置 tenantId 来实现数据隔离。
+ * 通过实现 EngineConfigurationConfigurer 接口，配置 Flowable 引擎。 Flowable 7.x 的多租户支持通过在部署、启动流程时设置
+ * tenantId 来实现数据隔离。
  * <p>
- * 多租户策略：
- * - 部署时：repositoryService.createDeployment().tenantId(tenantId).deploy()
- * - 启动流程：runtimeService.createProcessInstanceBuilder().tenantId(tenantId).start()
- * - 查询：query.taskTenantId(tenantId) 或 query.processInstanceTenantId(tenantId)
+ * 多租户策略： - 部署时：repositoryService.createDeployment().tenantId(tenantId).deploy() -
+ * 启动流程：runtimeService.createProcessInstanceBuilder().tenantId(tenantId).start() -
+ * 查询：query.taskTenantId(tenantId) 或 query.processInstanceTenantId(tenantId)
  *
  * @author lengleng
  * @date 2025-06-11

@@ -28,10 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * SysOauthClientDetailsServiceImpl OAuth 客户端管理测试
  *
- * 测试覆盖:
- * 1. JSON 扩展字段处理逻辑
- * 2. 缓存常量验证
- * 3. 扩展字段常量验证
+ * 测试覆盖: 1. JSON 扩展字段处理逻辑 2. 缓存常量验证 3. 扩展字段常量验证
  *
  * @author lengleng
  * @date 2026-06-12
@@ -53,9 +50,7 @@ class SysOauthClientDetailsServiceImplTest {
 			String captchaFlag = "1";
 
 			// When
-			String result = JSONUtil.parseObj(information)
-				.set(CommonConstants.CAPTCHA_FLAG, captchaFlag)
-				.toString();
+			String result = JSONUtil.parseObj(information).set(CommonConstants.CAPTCHA_FLAG, captchaFlag).toString();
 
 			// Then
 			assertThat(result).contains(CommonConstants.CAPTCHA_FLAG);
@@ -70,9 +65,7 @@ class SysOauthClientDetailsServiceImplTest {
 			String encFlag = "1";
 
 			// When
-			String result = JSONUtil.parseObj(information)
-				.set(CommonConstants.ENC_FLAG, encFlag)
-				.toString();
+			String result = JSONUtil.parseObj(information).set(CommonConstants.ENC_FLAG, encFlag).toString();
 
 			// Then
 			assertThat(result).contains(CommonConstants.ENC_FLAG);

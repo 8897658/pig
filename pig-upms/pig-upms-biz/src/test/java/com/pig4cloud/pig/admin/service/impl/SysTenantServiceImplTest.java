@@ -26,10 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * SysTenantServiceImpl 租户服务测试
  *
- * 测试覆盖:
- * 1. 租户编码验证逻辑
- * 2. 租户域名验证逻辑
- * 3. 查询条件构建逻辑
+ * 测试覆盖: 1. 租户编码验证逻辑 2. 租户域名验证逻辑 3. 查询条件构建逻辑
  *
  * @author lengleng
  * @date 2026-06-12

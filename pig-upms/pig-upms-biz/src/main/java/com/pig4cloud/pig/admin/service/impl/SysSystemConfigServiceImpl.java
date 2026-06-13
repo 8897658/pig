@@ -1,4 +1,5 @@
 package com.pig4cloud.pig.admin.service.impl;
+
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.springframework.transaction.annotation.Transactional;
+
 /**
  * SYS 系统配置服务实现
  *
@@ -33,10 +35,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMapper, SysSystemConfigEntity>
 		implements SysSystemConfigService {
+
 	private final SysMessageServiceImpl sysMessageServiceImpl;
+
 	public SysSystemConfigServiceImpl(SysMessageServiceImpl sysMessageServiceImpl) {
 		this.sysMessageServiceImpl = sysMessageServiceImpl;
 	}
+
 	/**
 	 * 列出系统配置
 	 * @param query 查询
@@ -52,6 +57,7 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 		});
 		return R.ok(configEntityList);
 	}
+
 	/**
 	 * 系统配置
 	 * @param page 页
@@ -73,13 +79,14 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 		});
 		return R.ok(pageResult);
 	}
+
 	/**
 	 * 更新系统配置
 	 * @param sysSystemConfig sys 系统配置
 	 * @return {@link R }
 	 */
 	@Override
-@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	@SneakyThrows
 	public R updateSystemConfig(SysSystemConfigEntity sysSystemConfig) {
 		// 更新configValue ，如果 accessSecret,tokenId,sign 属性为空，则不更新以上属性
@@ -103,4 +110,5 @@ public class SysSystemConfigServiceImpl extends ServiceImpl<SysSystemConfigMappe
 		}
 		return R.ok();
 	}
+
 }

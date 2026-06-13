@@ -66,7 +66,7 @@ class PayServiceBasicTests {
 	@DisplayName("测试支付状态流转")
 	void testPaymentStatusTransition() {
 		// 0: 待支付, 1: 支付成功, 2: 支付失败, 3: 已退款
-		int[] validTransitions = {0, 1, 2, 3};
+		int[] validTransitions = { 0, 1, 2, 3 };
 		for (int status : validTransitions) {
 			assertTrue(status >= 0 && status <= 3);
 		}

@@ -63,7 +63,8 @@ class OAuth2ResourceOwnerPasswordAuthenticationProviderTests {
 		Class<?> authenticationClass = OAuth2ResourceOwnerPasswordAuthenticationToken.class;
 
 		// When
-		boolean isAssignable = OAuth2ResourceOwnerPasswordAuthenticationToken.class.isAssignableFrom(authenticationClass);
+		boolean isAssignable = OAuth2ResourceOwnerPasswordAuthenticationToken.class
+			.isAssignableFrom(authenticationClass);
 
 		// Then
 		assertTrue(isAssignable);
@@ -76,7 +77,8 @@ class OAuth2ResourceOwnerPasswordAuthenticationProviderTests {
 		Class<?> authenticationClass = String.class;
 
 		// When
-		boolean isAssignable = OAuth2ResourceOwnerPasswordAuthenticationToken.class.isAssignableFrom(authenticationClass);
+		boolean isAssignable = OAuth2ResourceOwnerPasswordAuthenticationToken.class
+			.isAssignableFrom(authenticationClass);
 
 		// Then
 		assertFalse(isAssignable);

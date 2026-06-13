@@ -53,7 +53,7 @@ public class GenGroupServiceImpl extends ServiceImpl<GenGroupMapper, GenGroupEnt
 	 * @param genTemplateGroup
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void saveGenGroup(TemplateGroupDTO genTemplateGroup) {
 		// 1.保存group
 		GenGroupEntity groupEntity = new GenGroupEntity();
@@ -75,7 +75,7 @@ public class GenGroupServiceImpl extends ServiceImpl<GenGroupMapper, GenGroupEnt
 	 * @param ids groupIds
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void delGroupAndTemplate(Long[] ids) {
 		// 删除分组
 		this.removeBatchByIds(CollUtil.toList(ids));
@@ -99,7 +99,7 @@ public class GenGroupServiceImpl extends ServiceImpl<GenGroupMapper, GenGroupEnt
 	 * @param groupVo
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public void updateGroupAndTemplateById(GroupVO groupVo) {
 		// 1.更新自身
 		GenGroupEntity groupEntity = new GenGroupEntity();

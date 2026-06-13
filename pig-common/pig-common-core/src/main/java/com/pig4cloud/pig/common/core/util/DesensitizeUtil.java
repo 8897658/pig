@@ -34,9 +34,7 @@ public final class DesensitizeUtil {
 	/**
 	 * 手机号脱敏
 	 * <p>
-	 * 保留前3位和后4位，中间用*替代
-	 * 示例: 13812345678 -> 138****5678
-	 *
+	 * 保留前3位和后4位，中间用*替代 示例: 13812345678 -> 138****5678
 	 * @param phone 手机号
 	 * @return 脱敏后的手机号
 	 */
@@ -50,9 +48,7 @@ public final class DesensitizeUtil {
 	/**
 	 * 邮箱脱敏
 	 * <p>
-	 * 保留前3位和@后的域名，中间用*替代
-	 * 示例: test@example.com -> tes***@example.com
-	 *
+	 * 保留前3位和@后的域名，中间用*替代 示例: test@example.com -> tes***@example.com
 	 * @param email 邮箱
 	 * @return 脱敏后的邮箱
 	 */
@@ -70,9 +66,7 @@ public final class DesensitizeUtil {
 	/**
 	 * 身份证号脱敏
 	 * <p>
-	 * 保留前6位和后4位，中间用*替代
-	 * 示例: 110101199001011234 -> 110101********1234
-	 *
+	 * 保留前6位和后4位，中间用*替代 示例: 110101199001011234 -> 110101********1234
 	 * @param idCard 身份证号
 	 * @return 脱敏后的身份证号
 	 */
@@ -86,9 +80,7 @@ public final class DesensitizeUtil {
 	/**
 	 * 银行卡号脱敏
 	 * <p>
-	 * 保留前4位和后4位，中间用*替代
-	 * 示例: 6222021234567890 -> 6222************7890
-	 *
+	 * 保留前4位和后4位，中间用*替代 示例: 6222021234567890 -> 6222************7890
 	 * @param bankCard 银行卡号
 	 * @return 脱敏后的银行卡号
 	 */
@@ -104,9 +96,7 @@ public final class DesensitizeUtil {
 	/**
 	 * 姓名脱敏
 	 * <p>
-	 * 保留第一个字符，其余用*替代
-	 * 示例: 张三 -> 张*, 张三四 -> 张**
-	 *
+	 * 保留第一个字符，其余用*替代 示例: 张三 -> 张*, 张三四 -> 张**
 	 * @param name 姓名
 	 * @return 脱敏后的姓名
 	 */
@@ -124,7 +114,6 @@ public final class DesensitizeUtil {
 	 * 地址脱敏
 	 * <p>
 	 * 保留前10个字符，其余用*替代
-	 *
 	 * @param address 地址
 	 * @return 脱敏后的地址
 	 */
@@ -139,7 +128,6 @@ public final class DesensitizeUtil {
 	 * 密码脱敏
 	 * <p>
 	 * 直接返回 ****，不暴露任何密码信息
-	 *
 	 * @param password 密码
 	 * @return 脱敏后的密码
 	 */
@@ -151,7 +139,6 @@ public final class DesensitizeUtil {
 	 * 自定义脱敏
 	 * <p>
 	 * 保留前prefixLen位和后suffixLen位，中间用*替代
-	 *
 	 * @param str 待脱敏字符串
 	 * @param prefixLen 前置保留长度
 	 * @param suffixLen 后置保留长度
@@ -162,7 +149,8 @@ public final class DesensitizeUtil {
 			return str;
 		}
 		int middleLength = str.length() - prefixLen - suffixLen;
-		return str.substring(0, prefixLen) + StrUtil.repeat("*", middleLength) + str.substring(str.length() - suffixLen);
+		return str.substring(0, prefixLen) + StrUtil.repeat("*", middleLength)
+				+ str.substring(str.length() - suffixLen);
 	}
 
 }

@@ -82,7 +82,7 @@ public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper,
 	 */
 	@Override
 	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, key = "#sysPublicParam.publicKey")
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public R updateParam(SysPublicParam sysPublicParam) {
 		SysPublicParam param = this.getById(sysPublicParam.getPublicId());
 		// 系统内置
@@ -98,7 +98,7 @@ public class SysPublicParamServiceImpl extends ServiceImpl<SysPublicParamMapper,
 	 * @return
 	 */
 	@Override
-@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	@CacheEvict(value = CacheConstants.PARAMS_DETAILS, allEntries = true)
 	public R removeParamByIds(Long[] publicIds) {
 		List<Long> idList = this.baseMapper.selectByIds(CollUtil.toList(publicIds))

@@ -65,7 +65,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	 * @return
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public Boolean saveDsByEnc(GenDatasourceConf conf) {
 		// 校验配置合法性
 		if (!checkDataSource(conf)) {
@@ -87,7 +87,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	 * @return
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public Boolean updateDsByEnc(GenDatasourceConf conf) {
 		// 密码为空时，从数据库查询原始密码并解密，用于连接校验
 		if (StrUtil.isBlank(conf.getPassword())) {
@@ -117,7 +117,7 @@ public class GenDatasourceConfServiceImpl extends ServiceImpl<GenDatasourceConfM
 	 * @return
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public Boolean removeByDsId(Long[] dsIds) {
 		DynamicRoutingDataSource dynamicRoutingDataSource = SpringContextHolder.getBean(DynamicRoutingDataSource.class);
 		this.baseMapper.selectByIds(CollUtil.toList(dsIds))

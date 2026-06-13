@@ -50,12 +50,10 @@ public class CreateTableHandler {
 	 */
 	public Boolean createTable(String dsName, TableInfo tableInfo) {
 		if (tableInfo.getColumns() == null || tableInfo.getColumns().isEmpty()) {
-			throw new BizException(CommonErrorCode.PARAM_ERROR,
-				"自动创建表[" + tableInfo.getName() + "]中至少需要一个字段");
+			throw new BizException(CommonErrorCode.PARAM_ERROR, "自动创建表[" + tableInfo.getName() + "]中至少需要一个字段");
 		}
 		if (!TableModelEnum.CREATE.name().toLowerCase().equals(tableInfo.getModel())) {
-			throw new BizException(CommonErrorCode.PARAM_ERROR,
-				"自动创建表[" + tableInfo.getModel() + "]模式的处理未找到,请检查");
+			throw new BizException(CommonErrorCode.PARAM_ERROR, "自动创建表[" + tableInfo.getModel() + "]模式的处理未找到,请检查");
 		}
 		try {
 			AnylineService service = ServiceProxy.service(dsName);

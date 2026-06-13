@@ -45,7 +45,7 @@ public class SysSensitiveWordServiceImpl extends ServiceImpl<SysSensitiveWordMap
 	 * @return success/false
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public Boolean saveSensitive(SysSensitiveWordEntity sysSensitiveWord) {
 		List<SysSensitiveWordEntity> wordEntityList = baseMapper
 			.selectList(Wrappers.<SysSensitiveWordEntity>lambdaQuery()

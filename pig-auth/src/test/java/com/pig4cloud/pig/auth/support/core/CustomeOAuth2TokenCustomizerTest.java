@@ -26,10 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * CustomeOAuth2TokenCustomizer Token 增强测试
  *
- * 测试覆盖:
- * 1. 常量验证（license、client_id、active）
- * 2. 客户端模式判断逻辑
- * 3. 用户信息注入逻辑
+ * 测试覆盖: 1. 常量验证（license、client_id、active） 2. 客户端模式判断逻辑 3. 用户信息注入逻辑
  *
  * @author lengleng
  * @date 2026-06-12

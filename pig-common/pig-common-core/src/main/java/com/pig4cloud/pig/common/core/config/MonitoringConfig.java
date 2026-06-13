@@ -26,12 +26,8 @@ import org.springframework.context.annotation.Configuration;
  * <p>
  * 配置 Prometheus 指标采集，用于系统可观测性
  * <p>
- * 通过 application.yml 配置:
- * management:
- *   metrics:
- *     tags:
- *       application: ${spring.application.name}
- *       env: ${spring.profiles.active:default}
+ * 通过 application.yml 配置: management: metrics: tags: application:
+ * ${spring.application.name} env: ${spring.profiles.active:default}
  *
  * @author lengleng
  * @date 2026-06-13

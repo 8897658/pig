@@ -89,6 +89,20 @@ public class R<T> implements Serializable {
 		return restResult(data, CommonConstants.FAIL, msg);
 	}
 
+	/**
+	 * 失败返回（带自定义错误码）
+	 * @param code 错误码
+	 * @param msg 消息
+	 * @return 响应
+	 */
+	public static <T> R<T> failed(String code, String msg) {
+		R<T> apiResult = new R<>();
+		apiResult.setCode(CommonConstants.FAIL);
+		apiResult.setData((T) code);
+		apiResult.setMsg(msg);
+		return apiResult;
+	}
+
 	static <T> R<T> restResult(T data, int code, String msg) {
 		R<T> apiResult = new R<>();
 		apiResult.setCode(code);

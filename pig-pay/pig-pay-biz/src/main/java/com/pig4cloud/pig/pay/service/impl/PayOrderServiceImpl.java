@@ -96,9 +96,7 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 		String orderNo = payChannel.handleNotify(notifyData, config);
 		if (orderNo != null) {
 			// 更新订单状态
-			PayOrder order = this.lambdaQuery()
-				.eq(PayOrder::getOrderNo, orderNo)
-				.one();
+			PayOrder order = this.lambdaQuery().eq(PayOrder::getOrderNo, orderNo).one();
 			if (order != null) {
 				order.setStatus(2); // 支付成功
 				order.setPayTime(LocalDateTime.now());
@@ -111,18 +109,14 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 
 	@Override
 	public Integer queryStatus(String orderNo) {
-		PayOrder order = this.lambdaQuery()
-			.eq(PayOrder::getOrderNo, orderNo)
-			.one();
+		PayOrder order = this.lambdaQuery().eq(PayOrder::getOrderNo, orderNo).one();
 		return order != null ? order.getStatus() : null;
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public String refund(String orderNo, BigDecimal refundAmount, String reason) {
-		PayOrder order = this.lambdaQuery()
-			.eq(PayOrder::getOrderNo, orderNo)
-			.one();
+		PayOrder order = this.lambdaQuery().eq(PayOrder::getOrderNo, orderNo).one();
 		BizAssert.notNull(order, CommonErrorCode.PAY_ORDER_NOT_FOUND, "订单[" + orderNo + "]不存在");
 
 		PayChannelConfig config = getChannelConfig(order.getChannel());
@@ -146,10 +140,7 @@ public class PayOrderServiceImpl extends ServiceImpl<PayOrderMapper, PayOrder> i
 	 * 获取渠道实现
 	 */
 	private PayChannel getPayChannel(Integer channel) {
-		return payChannels.stream()
-			.filter(p -> p.getChannelCode() == channel)
-			.findFirst()
-			.orElse(null);
+		return payChannels.stream().filter(p -> p.getChannelCode() == channel).findFirst().orElse(null);
 	}
 
 }

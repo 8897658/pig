@@ -30,11 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * PigDaoAuthenticationProvider 认证逻辑测试
  *
- * 测试覆盖:
- * 1. 密码加密验证逻辑
- * 2. APP 模式判断逻辑
- * 3. 密码过期计算逻辑
- * 4. 常量验证
+ * 测试覆盖: 1. 密码加密验证逻辑 2. APP 模式判断逻辑 3. 密码过期计算逻辑 4. 常量验证
  *
  * @author lengleng
  * @date 2026-06-12

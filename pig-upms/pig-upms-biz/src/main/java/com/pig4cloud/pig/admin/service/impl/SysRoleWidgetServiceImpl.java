@@ -64,7 +64,7 @@ public class SysRoleWidgetServiceImpl extends ServiceImpl<SysRoleWidgetMapper, S
 	 * @return 操作成功返回 true
 	 */
 	@Override
-		@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class)
 	public boolean saveOrUpdateByRoleId(SysRoleWidget sysRoleWidget) {
 		SysRoleWidget existing = getOne(
 				Wrappers.<SysRoleWidget>lambdaQuery().eq(SysRoleWidget::getRoleId, sysRoleWidget.getRoleId()));

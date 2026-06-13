@@ -27,10 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * OAuth2ResourceOwnerBaseAuthenticationProvider 基类测试
  *
- * 测试覆盖:
- * 1. 错误码常量验证
- * 2. 异常转换逻辑验证
- * 3. 授权类型常量验证
+ * 测试覆盖: 1. 错误码常量验证 2. 异常转换逻辑验证 3. 授权类型常量验证
  *
  * @author lengleng
  * @date 2026-06-12

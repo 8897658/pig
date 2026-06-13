@@ -25,55 +25,58 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("SysLogServiceImpl 业务测试")
 class SysLogServiceImplTest {
 
-    @Mock
-    private SysLogMapper logMapper;
+	@Mock
+	private SysLogMapper logMapper;
 
-    @InjectMocks
-    private SysLogServiceImpl logService;
+	@InjectMocks
+	private SysLogServiceImpl logService;
 
-    @Nested
-    @DisplayName("日志记录测试")
-    class LogRecordTests {
-        
-        @Test
-        @DisplayName("日志类型-正常操作日志")
-        void testLogType_Normal() {
-            int normalType = 0;
-            assertThat(normalType).isEqualTo(0);
-        }
-        
-        @Test
-        @DisplayName("日志类型-异常日志")
-        void testLogType_Exception() {
-            int exceptionType = 1;
-            assertThat(exceptionType).isEqualTo(1);
-        }
-    }
+	@Nested
+	@DisplayName("日志记录测试")
+	class LogRecordTests {
 
-    @Nested
-    @DisplayName("日志内容测试")
-    class LogContentTests {
-        
-        @Test
-        @DisplayName("日志标题-不应为空")
-        void testLogTitle_NotEmpty() {
-            String title = "用户登录";
-            assertThat(title).isNotEmpty();
-        }
-        
-        @Test
-        @DisplayName("日志时间-记录创建时间")
-        void testLogCreateTime() {
-            LocalDateTime now = LocalDateTime.now();
-            assertThat(now).isNotNull();
-        }
-    }
+		@Test
+		@DisplayName("日志类型-正常操作日志")
+		void testLogType_Normal() {
+			int normalType = 0;
+			assertThat(normalType).isEqualTo(0);
+		}
 
-    private SysLog createLog(Long id, String title) {
-        SysLog log = new SysLog();
-        log.setId(id);
-        log.setTitle(title);
-        log.setCreateTime(LocalDateTime.now());
-        return log;
-    }
+		@Test
+		@DisplayName("日志类型-异常日志")
+		void testLogType_Exception() {
+			int exceptionType = 1;
+			assertThat(exceptionType).isEqualTo(1);
+		}
+
+	}
+
+	@Nested
+	@DisplayName("日志内容测试")
+	class LogContentTests {
+
+		@Test
+		@DisplayName("日志标题-不应为空")
+		void testLogTitle_NotEmpty() {
+			String title = "用户登录";
+			assertThat(title).isNotEmpty();
+		}
+
+		@Test
+		@DisplayName("日志时间-记录创建时间")
+		void testLogCreateTime() {
+			LocalDateTime now = LocalDateTime.now();
+			assertThat(now).isNotNull();
+		}
+
+	}
+
+	private SysLog createLog(Long id, String title) {
+		SysLog log = new SysLog();
+		log.setId(id);
+		log.setTitle(title);
+		log.setCreateTime(LocalDateTime.now());
+		return log;
+	}
+
 }
