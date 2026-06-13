@@ -1,5 +1,5 @@
 /*
- *    Copyright (c) 2018-2025, lengleng All rights reserved.
+ * Copyright (c) 2018-2026, lengleng All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -15,19 +15,9 @@
  * Author: lengleng (wangiegie@gmail.com)
  */
 
-package com.pig4cloud.pig.common.core.context;
-
 /**
- * 用户上下文供给方。 security 模块作为唯一实现并以 Spring Bean 形式暴露，通用模块（data、audit 等）只依赖该接口即可。
- *
- * @author lengleng
+ * 用户上下文模块
+ * <p>
+ * 提供用户信息的上下文存储和访问功能
  */
-public interface UserContextHolder {
-
-	/**
-	 * 获取当前登录用户上下文。
-	 * @return 未登录时返回 {@code null}
-	 */
-	UserContext get();
-
-}
+package com.pig4cloud.pig.common.core.context;

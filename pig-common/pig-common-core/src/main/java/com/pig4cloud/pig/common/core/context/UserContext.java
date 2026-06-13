@@ -26,10 +26,22 @@ import java.util.List;
  */
 public interface UserContext {
 
+	/**
+	 * 获取用户名
+	 * @return 用户名
+	 */
 	String getUsername();
 
+	/**
+	 * 获取部门ID
+	 * @return 部门ID
+	 */
 	Long getDeptId();
 
+	/**
+	 * 获取角色ID列表
+	 * @return 角色ID列表
+	 */
 	List<Long> getRoleIds();
 
 }
